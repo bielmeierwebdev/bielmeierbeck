@@ -1,0 +1,121 @@
+<div class="customers-page">
+  <div class="customers-header">
+    <div class="header-text">
+      <h1>Kunden</h1>
+      <p>Verwalte alle Kunden der Bäckerei</p>
+    </div>
+
+    <p-button label="Neuer Kunde" icon="pi pi-plus" (onClick)="openCreateCustomer()"> </p-button>
+  </div>
+
+  <div class="customers-card">
+    <div class="customers-toolbar">
+      <div class="search-box">
+        <i class="pi pi-search"></i>
+
+        <input pInputText type="text" placeholder="Kunden suchen..." />
+      </div>
+    </div>
+
+      <p-table
+        [value]="customers"
+        [paginator]="true"
+        [rows]="6"
+        responsiveLayout="scroll"
+        styleClass="customers-table"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Telefon</th>
+            <th>Adresse</th>
+            <th class="actions-column">Aktionen</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-customer>
+          <tr>
+            <td>
+              <div class="customer-name">
+                {{ customer.name }}
+              </div>
+            </td>
+
+            <td>
+              {{ customer.phone }}
+            </td>
+
+            <td>
+              {{ customer.address }}
+            </td>
+
+            <td>
+              <div class="table-actions">
+                <button
+                  pButton
+                  icon="pi pi-pencil"
+                  text
+                  rounded
+                  severity="secondary"
+                  (click)="openEditCustomer(customer)"
+                ></button>
+
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  text
+                  rounded
+                  severity="danger"
+                  (click)="deleteCustomer(customer)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    
+  </div>
+</div>
+<p-drawer
+  [visible]="drawerVisible"
+  (visibleChange)="drawerVisible = $event"
+  position="right"
+  [style]="{ width: '450px' }"
+  [header]="isEditMode ? 'Kunde bearbeiten' : 'Neuer Kunde'"
+>
+  <form [formGroup]="customerForm" class="customer-form">
+    <div class="field">
+      <label>Name</label>
+
+      <input pInputText formControlName="name" />
+    </div>
+
+    <div class="field">
+      <label>Telefon</label>
+
+      <input pInputText formControlName="phone" />
+    </div>
+
+    <div class="field">
+      <label>Adresse</label>
+
+      <input pInputText formControlName="address" />
+    </div>
+
+    <div class="field">
+      <label>Notizen</label>
+
+      <textarea pInputTextarea rows="6" formControlName="notes"> </textarea>
+    </div>
+
+    <p-button
+      [disabled]="customerForm.invalid"
+      [label]="isEditMode ? 'Speichern' : 'Kunde anlegen'"
+      icon="pi pi-save"
+      (onClick)="saveCustomer()"
+    >
+    </p-button>
+  </form>
+</p-drawer>
+
+<p-confirmdialog></p-confirmdialog>

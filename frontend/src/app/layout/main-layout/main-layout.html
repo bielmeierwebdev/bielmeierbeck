@@ -1,0 +1,29 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="logo-area">
+      <img src="logo_white.png" alt="Bielmeier Beck" />
+    </div>
+
+    <nav class="navigation">
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/customers">Kunden</a>
+      <a routerLink="/products">Produkte</a>
+      <a routerLink="/orders">Bestellungen</a>
+      <a routerLink="/employees">Mitarbeiter</a>
+    </nav>
+  </aside>
+
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div>Willkommen 👋</div>
+      <div class="topbar-actions">
+        <button class="theme-btn" (click)="toggleTheme()">🌙</button>
+        <button class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: app-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: appdb
+    ports:
+     - "5433:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: app-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@test.de
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
