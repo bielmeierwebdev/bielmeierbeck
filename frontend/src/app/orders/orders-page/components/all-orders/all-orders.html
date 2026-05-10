@@ -1,10 +1,11 @@
 <div class="orders-card">
-  <div class="orders-toolbar">
+  <div class="orders-toolbar" *ngIf="mode === 'saturday'">
     <div class="search-box">
       <i class="pi pi-search"></i>
 
       <input pInputText type="text" placeholder="Bestellungen suchen..." />
     </div>
+    <button pButton icon="pi pi-plus" label="Bestellung anlegen" class="create-order-btn"></button>
   </div>
 
   <p-table

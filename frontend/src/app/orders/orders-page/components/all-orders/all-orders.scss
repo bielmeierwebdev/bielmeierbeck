@@ -259,3 +259,23 @@
 .total-box strong {
   font-size: 1.5rem;
 }
+
+.orders-toolbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
+.create-order-btn {
+  background: #a32626;
+color: white !important;
+  border: none;
+}
+
+.create-order-btn:hover {
+  background: #c53030;
+}

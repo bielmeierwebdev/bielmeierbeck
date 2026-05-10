@@ -13,19 +13,19 @@
 
   <p-tabpanels>
     <p-tabpanel value="0">
-      <app-all-orders />
+      <app-all-orders mode="all" />
     </p-tabpanel>
 
     <p-tabpanel value="1">
-      <!-- <app-saturday-orders /> -->
+      <app-all-orders mode="saturday" />
     </p-tabpanel>
 
     <p-tabpanel value="2">
-      <!-- <app-special-orders /> -->
+      <app-all-orders mode="special" />
     </p-tabpanel>
 
     <p-tabpanel value="3">
-      <!-- <app-unpaid-orders /> -->
+      <app-all-orders mode="unpaid" />
     </p-tabpanel>
   </p-tabpanels>
 </p-tabs>

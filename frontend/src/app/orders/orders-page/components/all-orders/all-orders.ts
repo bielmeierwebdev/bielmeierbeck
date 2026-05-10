@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, Input } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -15,8 +15,6 @@ import { TagModule } from 'primeng/tag';
 import { DrawerModule } from 'primeng/drawer';
 
 import { TooltipModule } from 'primeng/tooltip';
-import { ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-all-orders',
@@ -37,7 +35,11 @@ import { DatePipe } from '@angular/common';
   styleUrl: './all-orders.scss',
 })
 export class AllOrdersComponent implements OnInit {
+  @Input()
+  mode: 'all' | 'saturday' | 'special' | 'unpaid' = 'all';
+
   private http = inject(HttpClient);
+
   private cdr = inject(ChangeDetectorRef);
 
   orders: any[] = [];
@@ -57,7 +59,7 @@ export class AllOrdersComponent implements OnInit {
       .subscribe({
         next: (data) => {
           setTimeout(() => {
-            this.orders = data.map((order) => {
+            let mappedOrders = data.map((order) => {
               const total = order.items.reduce(
                 (sum: number, item: any) => sum + item.quantity * Number(item.unitPrice),
 
@@ -82,6 +84,25 @@ export class AllOrdersComponent implements OnInit {
                 ),
               };
             });
+
+            if (this.mode === 'saturday') {
+              mappedOrders = mappedOrders.filter((order) => {
+                const date = new Date(order.pickupDate);
+
+                return date.getDay() === 6;
+              });
+            }
+
+            if (this.mode === 'special') {
+              mappedOrders = mappedOrders.filter((order) => order.special);
+            }
+
+            if (this.mode === 'unpaid') {
+              mappedOrders = mappedOrders.filter((order) => !order.paid);
+            }
+
+            this.orders = mappedOrders;
+
             this.cdr.detectChanges();
           });
         },
