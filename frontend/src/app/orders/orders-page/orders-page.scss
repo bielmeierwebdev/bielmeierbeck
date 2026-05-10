@@ -1,0 +1,79 @@
+.orders-page {
+  padding: 2rem;
+}
+
+.orders-header {
+  margin-bottom: 2rem;
+}
+
+.header-text h1 {
+  margin: 0;
+
+  font-size: 2.2rem;
+
+  color: var(--text-primary);
+}
+
+.header-text p {
+  margin-top: 0.5rem;
+
+  color: var(--text-secondary);
+}
+
+.orders-card {
+  background: var(--table-bg);
+
+  border-radius: 24px;
+
+  padding: 2rem;
+
+  border: 1px solid var(--border-color);
+
+  min-height: 500px;
+
+  margin-top: 1.5rem;
+
+  color: var(--text-primary);
+
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+}
+
+:host ::ng-deep .p-tablist-tab-list {
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .p-tab {
+  border-radius: 12px 12px 0 0;
+
+  color: var(--text-secondary);
+
+  transition: 0.2s ease;
+}
+
+:host ::ng-deep .p-tab-active {
+  color: white !important;
+
+  background: #7a1c1c !important;
+}
+
+:host ::ng-deep .p-tab:hover {
+  background: rgba(122, 28, 28, 0.1);
+}
+
+:host ::ng-deep .p-tabpanels {
+  background: transparent !important;
+
+  padding: 0;
+}
+
+:host ::ng-deep .p-tablist {
+  background: transparent !important;
+
+  border: none;
+}
+
+:host ::ng-deep .p-tablist-tab-list {
+  background: transparent !important;
+
+  border: none;
+}
