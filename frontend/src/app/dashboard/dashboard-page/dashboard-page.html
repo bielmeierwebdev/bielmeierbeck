@@ -1,0 +1,174 @@
+<div class="dashboard-layout">
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <div class="stat-label">
+        {{ stat.label }}
+      </div>
+
+      <div class="stat-value">
+        {{ stat.value }}
+      </div>
+    </div>
+  </div>
+
+  <div class="widgets-grid">
+    <div class="calendar-widget">
+      <div class="section-header">Sonderbestellungen</div>
+
+      <div class="mini-calendar">
+        <div
+          class="calendar-day"
+          *ngFor="let day of [].constructor(31); let i = index"
+          (click)="openDay(i + 1)"
+        >
+          <span>
+            {{ i + 1 }}
+          </span>
+
+          <div
+            class="calendar-dot"
+            *ngIf="specialOrders.some((order) => order.day === i + 1)"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sweets-widget">
+      <div class="section-header">Süßwaren Samstag</div>
+
+      <div class="sweets-list">
+        <div class="sweet-card" *ngFor="let sweet of sweetProducts">
+          <div class="sweet-left">
+            <input type="checkbox" [checked]="sweet.active" />
+
+            <span>
+              {{ sweet.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analytics-slider">
+    <div class="analytics-card">
+      <div class="chart-top">
+        <div>
+          <div class="section-header">Umsatz pro Monat</div>
+
+          <div class="chart-subtitle">+12% zum Vormonat</div>
+        </div>
+
+        <div class="revenue-total">33.200 €</div>
+      </div>
+
+      <p-chart type="line" [data]="revenueChartData"> </p-chart>
+    </div>
+
+    <div class="analytics-card">
+      <div class="section-header">Bestellungen pro Monat</div>
+
+      <p-chart type="line" [data]="chartData"> </p-chart>
+    </div>
+
+    <div class="analytics-card">
+      <div class="chart-header">
+        <div class="section-header">Meistverkaufte Produkte</div>
+
+        <div class="chart-switch">
+          <button
+            [class.active]="selectedChartType === 'BACKWARE'"
+            (click)="selectedChartType = 'BACKWARE'"
+          >
+            Backwaren
+          </button>
+
+          <button
+            [class.active]="selectedChartType === 'SUESSWARE'"
+            (click)="selectedChartType = 'SUESSWARE'"
+          >
+            Süßwaren
+          </button>
+        </div>
+      </div>
+
+      <p-chart type="bar" [data]="productChartData"> </p-chart>
+    </div>
+  </div>
+</div>
+
+<p-drawer
+  [visible]="calendarDrawerVisible"
+  (visibleChange)="calendarDrawerVisible = $event"
+  position="right"
+  [style]="{ width: '420px' }"
+  header="Sonderbestellungen"
+>
+  <div class="calendar-drawer">
+    <h2>{{ selectedDay }}. Mai</h2>
+
+    <div *ngIf="selectedSpecialOrders.length">
+      <div class="special-order-card" *ngFor="let order of selectedSpecialOrders">
+        <div class="special-order-top">
+          <strong>
+            {{ order.title }}
+          </strong>
+
+          <div class="special-actions">
+            <button>Bearbeiten</button>
+
+            <button class="delete-btn">Löschen</button>
+          </div>
+        </div>
+
+        <p>Abholung {{ order.pickupTime }} Uhr</p>
+
+        <span>
+          {{ order.notes }}
+        </span>
+      </div>
+
+      <button class="new-special-btn" (click)="openSpecialOrderForm()">
+        Neue Sonderbestellung
+      </button>
+    </div>
+
+    <div *ngIf="!selectedSpecialOrders.length" class="empty-special-day">
+      <p>Keine Sonderbestellungen</p>
+
+      <button class="new-special-btn" (click)="openSpecialOrderForm()">
+        Sonderbestellung anlegen
+      </button>
+    </div>
+  </div>
+</p-drawer>
+
+<p-drawer
+  [visible]="specialOrderFormVisible"
+  (visibleChange)="specialOrderFormVisible = $event"
+  position="right"
+  [style]="{ width: '500px' }"
+  header="Neue Sonderbestellung"
+>
+  <div class="special-order-form">
+    <div class="form-group">
+      <label> Titel </label>
+
+      <input type="text" placeholder="z.B. Geburtstag Müller" />
+    </div>
+
+    <div class="form-group">
+      <label> Abholzeit </label>
+
+      <input type="time" />
+    </div>
+
+    <div class="form-group">
+      <label> Notizen </label>
+
+      <textarea rows="5" placeholder="Weitere Infos..."></textarea>
+    </div>
+
+    <button class="save-special-btn">Sonderbestellung speichern</button>
+  </div>
+</p-drawer>
