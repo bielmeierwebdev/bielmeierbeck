@@ -1,0 +1,82 @@
+<div class="products-page">
+  <div class="products-header">
+    <div class="header-text">
+      <h1>Produkte</h1>
+
+      <p>Verwalte alle Produkte der Bäckerei</p>
+    </div>
+
+    <p-button label="Neues Produkt" icon="pi pi-plus"> </p-button>
+  </div>
+
+  <div class="products-card">
+    <div class="products-toolbar">
+      <div class="search-box">
+        <i class="pi pi-search"></i>
+
+        <input pInputText type="text" placeholder="Produkte suchen..." />
+      </div>
+    </div>
+
+    <p-table
+      [value]="products"
+      [paginator]="true"
+      [rows]="8"
+      responsiveLayout="scroll"
+      styleClass="products-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+
+          <th>Kategorie</th>
+
+          <th>Typ</th>
+
+          <th>Preis</th>
+
+          <th>Aktiv</th>
+
+          <th class="actions-column">Aktionen</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>
+            <div class="product-name">
+              {{ product.name }}
+            </div>
+          </td>
+
+          <td>
+            <p-tag
+              [value]="getCategoryLabel(product.category)"
+              [severity]="getCategorySeverity(product.category)"
+            >
+            </p-tag>
+          </td>
+
+          <td>
+            <p-tag [value]="getTypeLabel(product.type)" [severity]="getTypeSeverity(product.type)">
+            </p-tag>
+          </td>
+
+          <td>{{ formatPrice(product) }} €</td>
+
+          <td>
+            <p-toggleswitch [ngModel]="product.active"> </p-toggleswitch>
+          </td>
+
+          <td>
+            <div class="table-actions">
+              <button pButton icon="pi pi-pencil" text rounded severity="secondary"></button>
+
+              <button pButton icon="pi pi-trash" text rounded severity="danger"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
