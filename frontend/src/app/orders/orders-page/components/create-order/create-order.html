@@ -1,9 +1,36 @@
-<div class="create-order-layout">
+<div class="create-order-layout" *ngIf="products.length">
   <div class="left-side">
     <div class="customer-section">
-      <h2>Kunde</h2>
+      <div class="customer-header">
+        <h2>Kunde</h2>
 
-      <input type="text" placeholder="Kunde suchen..." />
+        <div class="customer-actions">
+          <button class="customer-action-btn" (click)="customerDialogVisible = true">
+            + Kunde
+          </button>
+
+          <button class="customer-action-btn ai-btn" (click)="aiDialogVisible = true">✨ KI</button>
+        </div>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Kunde suchen..."
+        [(ngModel)]="customerSearch"
+        (input)="searchCustomers()"
+      />
+
+      <div class="customer-results" *ngIf="filteredCustomers.length">
+        <div
+          class="customer-result"
+          *ngFor="let customer of filteredCustomers"
+          (click)="selectCustomer(customer)"
+        >
+          <strong>
+            {{ customer.name }}
+          </strong>
+        </div>
+      </div>
     </div>
 
     <div class="products-section">
@@ -56,7 +83,37 @@
         <strong> {{ getTotal().toFixed(2) }} € </strong>
       </div>
 
-      <button class="save-order-btn">Bestellung speichern</button>
+      <button class="save-order-btn" (click)="saveOrder()">Bestellung speichern</button>
     </div>
   </div>
 </div>
+
+<p-dialog
+  [(visible)]="aiDialogVisible"
+  [modal]="true"
+  [style]="{ width: '700px' }"
+  header="KI Bestellung"
+>
+  <div class="ai-order-dialog">
+    <textarea
+      rows="12"
+      placeholder="WhatsApp Nachricht einfügen..."
+      [(ngModel)]="aiText"
+    ></textarea>
+
+    <button class="analyze-btn">Bestellung analysieren</button>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="customerDialogVisible"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  header="Neuer Kunde"
+>
+  <div class="customer-dialog">
+    <input type="text" placeholder="Name" [(ngModel)]="newCustomer.name" />
+
+    <button class="save-customer-btn " (click)="saveCustomer()">Kunde speichern</button>
+  </div>
+</p-dialog>

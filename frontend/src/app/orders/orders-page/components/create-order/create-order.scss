@@ -234,3 +234,140 @@
 .save-order-btn:hover {
   background: #c53030;
 }
+
+.customer-results {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.7rem;
+
+  margin-top: 1rem;
+
+  max-height: 260px;
+
+  overflow-y: auto;
+}
+
+.customer-result {
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  border-radius: 14px;
+
+  padding: 0.9rem 1rem;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.25rem;
+}
+
+.customer-result:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.customer-result strong {
+  color: white;
+
+  font-size: 0.95rem;
+}
+
+.customer-result span {
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 0.82rem;
+}
+
+.customer-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1rem;
+}
+
+.customer-actions {
+  display: flex;
+
+  gap: 0.7rem;
+}
+
+.customer-action-btn {
+  height: 38px;
+
+  padding: 0 1rem;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.customer-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ai-btn {
+  background: #d08b4d;
+
+  color: #1a120b;
+}
+
+.ai-order-dialog,
+.customer-dialog {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.ai-order-dialog textarea,
+.customer-dialog input {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 14px;
+
+  padding: 1rem;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: white;
+}
+
+.analyze-btn,
+.save-customer-btn {
+  height: 48px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #d08b4d;
+
+  color: #1a120b;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}

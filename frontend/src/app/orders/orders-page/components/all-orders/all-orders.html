@@ -155,8 +155,9 @@
   [visible]="createDrawerVisible"
   (visibleChange)="createDrawerVisible = $event"
   position="right"
+  [modal]="true"
   [style]="{ width: '1100px', maxWidth: '100vw' }"
   header="Neue Bestellung"
 >
-  <app-create-order />
+  <app-create-order (orderSaved)="onOrderSaved()" />
 </p-drawer>

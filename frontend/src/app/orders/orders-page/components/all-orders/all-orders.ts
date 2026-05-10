@@ -61,52 +61,52 @@ export class AllOrdersComponent implements OnInit {
 
       .subscribe({
         next: (data) => {
-          setTimeout(() => {
-            let mappedOrders = data.map((order) => {
-              const total = order.items.reduce(
-                (sum: number, item: any) => sum + item.quantity * Number(item.unitPrice),
+          let mappedOrders = data.map((order) => {
+            const total = order.items.reduce(
+              (sum: number, item: any) => sum + item.quantity * Number(item.unitPrice),
+
+              0,
+            );
+
+            return {
+              ...order,
+
+              items: order.items.map((item: any) => ({
+                ...item,
+
+                unitPrice: Number(item.unitPrice),
+              })),
+
+              total,
+
+              itemCount: order.items.reduce(
+                (sum: number, item: any) => sum + item.quantity,
 
                 0,
-              );
+              ),
+            };
+          });
 
-              return {
-                ...order,
+          if (this.mode === 'saturday') {
+            mappedOrders = mappedOrders.filter((order) => {
+              const date = new Date(order.pickupDate);
 
-                items: order.items.map((item: any) => ({
-                  ...item,
-
-                  unitPrice: Number(item.unitPrice),
-                })),
-
-                total,
-
-                itemCount: order.items.reduce(
-                  (sum: number, item: any) => sum + item.quantity,
-
-                  0,
-                ),
-              };
+              return date.getDay() === 6;
             });
+          }
 
-            if (this.mode === 'saturday') {
-              mappedOrders = mappedOrders.filter((order) => {
-                const date = new Date(order.pickupDate);
+          if (this.mode === 'special') {
+            mappedOrders = mappedOrders.filter((order) => order.special);
+          }
 
-                return date.getDay() === 6;
-              });
-            }
+          if (this.mode === 'unpaid') {
+            mappedOrders = mappedOrders.filter((order) => !order.paid);
+          }
 
-            if (this.mode === 'special') {
-              mappedOrders = mappedOrders.filter((order) => order.special);
-            }
-
-            if (this.mode === 'unpaid') {
-              mappedOrders = mappedOrders.filter((order) => !order.paid);
-            }
-
+          queueMicrotask(() => {
             this.orders = mappedOrders;
 
-            this.cdr.detectChanges();
+            this.cdr.markForCheck();
           });
         },
 
@@ -120,5 +120,13 @@ export class AllOrdersComponent implements OnInit {
     this.selectedOrder = order;
 
     this.drawerVisible = true;
+  }
+
+  onOrderSaved() {
+    this.createDrawerVisible = false;
+
+    setTimeout(() => {
+      this.loadOrders();
+    }, 150);
   }
 }
