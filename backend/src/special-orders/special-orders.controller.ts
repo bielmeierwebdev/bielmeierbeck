@@ -6,9 +6,11 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Patch,
 } from '@nestjs/common';
 
 import { SpecialOrdersService } from './special-orders.service';
+import { CreateSpecialOrderDto } from './dto/create-special-order.dto';
 
 @Controller('special-orders')
 export class SpecialOrdersController {
@@ -22,9 +24,32 @@ export class SpecialOrdersController {
   @Post()
   create(
     @Body()
-    body: any,
+    body: CreateSpecialOrderDto,
   ) {
-    return this.specialOrdersService.create(body);
+    return this.specialOrdersService.create({
+      ...body,
+
+      pickupDate: body.pickupDate,
+    });
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe)
+    id: number,
+
+    @Body()
+    body: CreateSpecialOrderDto,
+  ) {
+    return this.specialOrdersService.update(
+      id,
+
+      {
+        ...body,
+
+        pickupDate: body.pickupDate,
+      },
+    );
   }
 
   @Delete(':id')

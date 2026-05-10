@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SpecialOrdersService {
@@ -14,13 +15,37 @@ export class SpecialOrdersService {
     });
   }
 
-  create(data: any) {
+  create(data: Prisma.SpecialOrderCreateInput) {
     return this.prisma.specialOrder.create({
       data,
     });
   }
 
-  remove(id: number) {
+  update(
+    id: number,
+
+    data: Prisma.SpecialOrderUpdateInput,
+  ) {
+    return this.prisma.specialOrder.update({
+      where: {
+        id,
+      },
+
+      data,
+    });
+  }
+
+  async remove(id: number) {
+    const order = await this.prisma.specialOrder.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!order) {
+      throw new Error('Special order not found');
+    }
+
     return this.prisma.specialOrder.delete({
       where: {
         id,

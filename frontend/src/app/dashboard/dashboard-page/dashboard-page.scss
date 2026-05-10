@@ -398,3 +398,86 @@
 .save-special-btn:hover {
   background: #c53030;
 }
+
+.calendar-navigation {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1rem;
+}
+
+.calendar-navigation button {
+  width: 34px;
+
+  height: 34px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.calendar-navigation button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.calendar-title {
+  color: white;
+
+  font-weight: 700;
+}
+
+.delete-dialog {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1.5rem;
+
+  color: white;
+}
+
+.delete-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 1rem;
+}
+
+.cancel-btn,
+.confirm-delete-btn {
+  height: 42px;
+
+  padding: 0 1rem;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+}
+
+.confirm-delete-btn {
+  background: #a32626;
+
+  color: white;
+}

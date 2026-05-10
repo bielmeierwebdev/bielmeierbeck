@@ -15,6 +15,16 @@
     <div class="calendar-widget">
       <div class="section-header">Sonderbestellungen</div>
 
+      <div class="calendar-navigation">
+        <button (click)="previousMonth()">←</button>
+
+        <div class="calendar-title">
+          {{ getCurrentMonthLabel() }}
+        </div>
+
+        <button (click)="nextMonth()">→</button>
+      </div>
+
       <div class="mini-calendar">
         <div
           class="calendar-day"
@@ -25,10 +35,7 @@
             {{ i + 1 }}
           </span>
 
-          <div
-            class="calendar-dot"
-            *ngIf="specialOrders.some((order) => order.day === i + 1)"
-          ></div>
+          <div class="calendar-dot" *ngIf="hasSpecialOrder(i + 1)"></div>
         </div>
       </div>
     </div>
@@ -117,7 +124,7 @@
           <div class="special-actions">
             <button>Bearbeiten</button>
 
-            <button class="delete-btn">Löschen</button>
+            <button class="delete-btn" (click)="openDeleteDialog(order.id)">Löschen</button>
           </div>
         </div>
 
@@ -143,10 +150,9 @@
   </div>
 </p-drawer>
 
-<p-drawer
-  [visible]="specialOrderFormVisible"
-  (visibleChange)="specialOrderFormVisible = $event"
-  position="right"
+<p-dialog
+  [(visible)]="specialOrderFormVisible"
+  [modal]="true"
   [style]="{ width: '500px' }"
   header="Neue Sonderbestellung"
 >
@@ -154,21 +160,50 @@
     <div class="form-group">
       <label> Titel </label>
 
-      <input type="text" placeholder="z.B. Geburtstag Müller" />
+      <input
+        type="text"
+        placeholder="z.B. Geburtstag Müller"
+        [(ngModel)]="specialOrderForm.title"
+      />
     </div>
 
     <div class="form-group">
       <label> Abholzeit </label>
 
-      <input type="time" />
+      <input type="time" [(ngModel)]="specialOrderForm.pickupTime" />
     </div>
 
     <div class="form-group">
       <label> Notizen </label>
 
-      <textarea rows="5" placeholder="Weitere Infos..."></textarea>
+      <textarea
+        rows="5"
+        placeholder="Weitere Infos..."
+        [(ngModel)]="specialOrderForm.notes"
+      ></textarea>
     </div>
 
-    <button class="save-special-btn">Sonderbestellung speichern</button>
+    <button class="save-special-btn" (click)="saveSpecialOrder()">
+      Sonderbestellung speichern
+    </button>
   </div>
-</p-drawer>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="deleteDialogVisible"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  header="Löschen"
+>
+  <div class="delete-dialog">
+    <p>Sonderbestellung wirklich löschen?</p>
+
+    <div class="delete-actions">
+      <button class="cancel-btn" (click)="deleteDialogVisible = false">Abbrechen</button>
+
+      <button class="confirm-delete-btn" (click)="deleteSpecialOrder(selectedDeleteOrderId!)">
+        Löschen
+      </button>
+    </div>
+  </div>
+</p-dialog>

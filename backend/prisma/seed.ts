@@ -10,6 +10,8 @@ import { seedEmployees } from './seeds/employees.seed';
 
 import { seedAllOrders } from './seeds/allOrders.seed';
 
+import { seedSpecialOrders } from './seeds/specialOrders.seed';
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -32,6 +34,8 @@ async function main() {
   await seedProducts(prisma);
 
   await seedAllOrders(prisma);
+
+  await seedSpecialOrders(prisma);
 
   console.log('Seed erfolgreich 🌱');
 }
