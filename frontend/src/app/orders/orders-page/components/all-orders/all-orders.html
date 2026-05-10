@@ -66,10 +66,81 @@
 
         <td>
           <div class="table-actions">
-            <button pButton icon="pi pi-eye" text rounded></button>
+            <button pButton icon="pi pi-eye" text rounded (click)="openOrder(order)"></button>
           </div>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
+<p-drawer
+  [visible]="drawerVisible"
+  (visibleChange)="drawerVisible = $event"
+  position="right"
+  [style]="{ width: '450px' }"
+  header="Bestellung"
+>
+  <div class="order-details" *ngIf="selectedOrder">
+    <div class="detail-card">
+      <div class="customer-header">
+        <div>
+          <h2>
+            {{ selectedOrder.customer }}
+          </h2>
+
+          <p>
+            {{ selectedOrder.phone }}
+          </p>
+        </div>
+
+        <p-tag
+          [value]="selectedOrder.paid ? 'Bezahlt' : 'Offen'"
+          [severity]="selectedOrder.paid ? 'success' : 'danger'"
+        >
+        </p-tag>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="section-title">Abholung</div>
+
+      <div class="pickup-date">
+        {{ selectedOrder.pickupDate }}
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="section-title">Produkte</div>
+
+      <div class="product-row" *ngFor="let product of selectedOrder.products">
+        <div class="product-left">
+          <span class="quantity"> {{ product.quantity }}x </span>
+
+          <span
+            class="product-name"
+            [pTooltip]="'Einzelpreis: ' + product.price.toFixed(2) + ' €'"
+            tooltipPosition="top"
+          >
+            {{ product.name }}
+          </span>
+        </div>
+
+        <div class="product-price">{{ (product.quantity * product.price).toFixed(2) }} €</div>
+      </div>
+    </div>
+
+    <div class="detail-card" *ngIf="selectedOrder.notes">
+      <div class="section-title">Notizen</div>
+
+      <p class="notes-text">
+        {{ selectedOrder.notes }}
+      </p>
+    </div>
+
+    <div class="total-box">
+      <span> Gesamt </span>
+
+      <strong> {{ selectedOrder.total.toFixed(2) }} € </strong>
+    </div>
+  </div>
+</p-drawer>

@@ -8,10 +8,14 @@ import { ButtonModule } from 'primeng/button';
 
 import { TagModule } from 'primeng/tag';
 
+import { DrawerModule } from 'primeng/drawer';
+import { CommonModule } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-all-orders',
 
-  imports: [TableModule, InputTextModule, ButtonModule, TagModule],
+  imports: [TableModule, InputTextModule, ButtonModule, TagModule, DrawerModule, CommonModule, TooltipModule],
 
   templateUrl: './all-orders.html',
 
@@ -31,6 +35,28 @@ export class AllOrdersComponent {
       paid: true,
 
       special: false,
+
+      phone: '0151 123456',
+
+      notes: 'Bitte alles geschnitten',
+
+      products: [
+        {
+          name: 'Brezen',
+
+          quantity: 10,
+
+          price: 1.2,
+        },
+
+        {
+          name: 'Croissant',
+
+          quantity: 2,
+
+          price: 2.4,
+        },
+      ],
     },
 
     {
@@ -61,4 +87,14 @@ export class AllOrdersComponent {
       special: false,
     },
   ];
+
+  drawerVisible = false;
+
+  selectedOrder: any = null;
+
+  openOrder(order: any) {
+    this.selectedOrder = order;
+
+    this.drawerVisible = true;
+  }
 }
