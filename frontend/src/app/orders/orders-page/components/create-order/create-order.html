@@ -1,0 +1,62 @@
+<div class="create-order-layout">
+  <div class="left-side">
+    <div class="customer-section">
+      <h2>Kunde</h2>
+
+      <input type="text" placeholder="Kunde suchen..." />
+    </div>
+
+    <div class="products-section">
+      <h2>Produkte</h2>
+
+      <div class="products-grid">
+        <button class="product-card" *ngFor="let product of products" (click)="addProduct(product)">
+          <span class="product-name">
+            {{ product.name }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="cart-section">
+    <h2>Bestellung</h2>
+
+    <div class="empty-cart" *ngIf="!cart.length">Noch keine Produkte ausgewählt</div>
+
+    <div class="cart-items" *ngIf="cart.length">
+      <div class="cart-item" *ngFor="let item of cart">
+        <div class="cart-item-left">
+          <div class="quantity-controls">
+            <button class="quantity-btn" (click)="decreaseQuantity(item)">-</button>
+
+            <span class="cart-quantity">
+              {{ item.quantity }}
+            </span>
+
+            <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+          </div>
+
+          <span class="cart-name">
+            {{ item.name }}
+          </span>
+        </div>
+
+        <div class="cart-right">
+          <div class="cart-price">{{ (item.quantity * item.prices[0].price).toFixed(2) }} €</div>
+
+          <button class="remove-btn" (click)="removeProduct(item)">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer" *ngIf="cart.length">
+      <div class="cart-total">
+        <span> Gesamt </span>
+
+        <strong> {{ getTotal().toFixed(2) }} € </strong>
+      </div>
+
+      <button class="save-order-btn">Bestellung speichern</button>
+    </div>
+  </div>
+</div>

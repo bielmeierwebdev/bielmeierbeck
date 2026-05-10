@@ -15,6 +15,7 @@ import { TagModule } from 'primeng/tag';
 import { DrawerModule } from 'primeng/drawer';
 
 import { TooltipModule } from 'primeng/tooltip';
+import { CreateOrderComponent } from '../create-order/create-order';
 
 @Component({
   selector: 'app-all-orders',
@@ -28,6 +29,7 @@ import { TooltipModule } from 'primeng/tooltip';
     DrawerModule,
     TooltipModule,
     DatePipe,
+    CreateOrderComponent,
   ],
 
   templateUrl: './all-orders.html',
@@ -45,6 +47,7 @@ export class AllOrdersComponent implements OnInit {
   orders: any[] = [];
 
   drawerVisible = false;
+  createDrawerVisible = false;
 
   selectedOrder: any = null;
 

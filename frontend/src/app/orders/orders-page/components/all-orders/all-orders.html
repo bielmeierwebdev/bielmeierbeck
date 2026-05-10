@@ -5,7 +5,13 @@
 
       <input pInputText type="text" placeholder="Bestellungen suchen..." />
     </div>
-    <button pButton icon="pi pi-plus" label="Bestellung anlegen" class="create-order-btn"></button>
+    <button
+      pButton
+      icon="pi pi-plus"
+      label="Bestellung anlegen"
+      class="create-order-btn"
+      (click)="createDrawerVisible = true"
+    ></button>
   </div>
 
   <p-table
@@ -144,4 +150,13 @@
       <strong> {{ selectedOrder.total.toFixed(2) }} € </strong>
     </div>
   </div>
+</p-drawer>
+<p-drawer
+  [visible]="createDrawerVisible"
+  (visibleChange)="createDrawerVisible = $event"
+  position="right"
+  [style]="{ width: '1100px', maxWidth: '100vw' }"
+  header="Neue Bestellung"
+>
+  <app-create-order />
 </p-drawer>
