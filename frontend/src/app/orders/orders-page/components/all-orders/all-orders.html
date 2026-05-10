@@ -35,15 +35,15 @@
     <ng-template pTemplate="body" let-order>
       <tr>
         <td>
-          {{ order.customer }}
+          {{ order.customer?.name }}
         </td>
 
         <td>
-          {{ order.pickupDate }}
+          {{ order.pickupDate | date: 'dd.MM.yyyy' }}
         </td>
 
         <td>
-          {{ order.items }}
+          {{ order.itemCount }}
         </td>
 
         <td>{{ order.total.toFixed(2) }} €</td>
@@ -85,11 +85,11 @@
       <div class="customer-header">
         <div>
           <h2>
-            {{ selectedOrder.customer }}
+            {{ selectedOrder.customer?.name }}
           </h2>
 
           <p>
-            {{ selectedOrder.phone }}
+            {{ selectedOrder.customer?.phone }}
           </p>
         </div>
 
@@ -105,27 +105,27 @@
       <div class="section-title">Abholung</div>
 
       <div class="pickup-date">
-        {{ selectedOrder.pickupDate }}
+        {{ selectedOrder.pickupDate | date: 'dd.MM.yyyy' }}
       </div>
     </div>
 
     <div class="detail-card">
       <div class="section-title">Produkte</div>
 
-      <div class="product-row" *ngFor="let product of selectedOrder.products">
+      <div class="product-row" *ngFor="let item of selectedOrder.items">
         <div class="product-left">
-          <span class="quantity"> {{ product.quantity }}x </span>
+          <span class="quantity"> {{ item.quantity }}x </span>
 
           <span
             class="product-name"
-            [pTooltip]="'Einzelpreis: ' + product.price.toFixed(2) + ' €'"
+            [pTooltip]="'Einzelpreis: ' + item.unitPrice.toFixed(2) + ' €'"
             tooltipPosition="top"
           >
-            {{ product.name }}
+            {{ item.product.name }}
           </span>
         </div>
 
-        <div class="product-price">{{ (product.quantity * product.price).toFixed(2) }} €</div>
+        <div class="product-price">{{ (item.quantity * item.unitPrice).toFixed(2) }} €</div>
       </div>
     </div>
 

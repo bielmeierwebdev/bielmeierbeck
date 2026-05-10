@@ -85,6 +85,7 @@ model Order {
   id         Int         @id @default(autoincrement())
   customerId Int?
   customer   Customer?   @relation(fields: [customerId], references: [id])
+  special    Boolean     @default(false)
   orderDate  DateTime    @default(now())
   pickupDate DateTime
   paid       Boolean     @default(false)

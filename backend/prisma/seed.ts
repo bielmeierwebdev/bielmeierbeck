@@ -1,17 +1,37 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
+
+import * as bcrypt from 'bcrypt';
 
 import { seedCustomers } from './seeds/customers.seed';
+
 import { seedProducts } from './seeds/products.seed';
+
 import { seedEmployees } from './seeds/employees.seed';
+
+import { seedAllOrders } from './seeds/allOrders.seed';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  const hashedPassword = await bcrypt.hash('admin123', 10);
+
+  await prisma.user.create({
+    data: {
+      email: 'admin@test.de',
+
+      password: hashedPassword,
+
+      role: Role.ADMIN,
+    },
+  });
+
   await seedEmployees();
 
   await seedCustomers(prisma);
 
   await seedProducts(prisma);
+
+  await seedAllOrders(prisma);
 
   console.log('Seed erfolgreich 🌱');
 }
