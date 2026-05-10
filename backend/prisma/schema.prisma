@@ -30,23 +30,23 @@ model Customer {
 }
 
 model Product {
-  id         Int           @id @default(autoincrement())
-  name       String
-  type       ProductType
-  category   ProductCategory
-  active     Boolean       @default(true)
-  prices     ProductPrice[]
-  createdAt  DateTime      @default(now())
-  deleted    Boolean       @default(false)
+  id        Int             @id @default(autoincrement())
+  name      String
+  type      ProductType
+  category  ProductCategory
+  active    Boolean         @default(true)
+  prices    ProductPrice[]
+  createdAt DateTime        @default(now())
+  deleted   Boolean         @default(false)
 }
 
 model ProductPrice {
-  id         Int       @id @default(autoincrement())
-  productId  Int
-  product    Product   @relation(fields: [productId], references: [id])
-  price      Decimal   @db.Decimal(10,2)
-  validFrom  DateTime  @default(now())
-  createdAt  DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  price     Decimal  @db.Decimal(10, 2)
+  validFrom DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 enum ProductType {
@@ -57,4 +57,24 @@ enum ProductType {
 enum ProductCategory {
   BACKWARE
   SUESSWARE
+}
+
+model Employee {
+  id        Int            @id @default(autoincrement())
+  name      String
+  role      String?
+  avatar    String?
+  phone     String?
+  email     String?
+  createdAt DateTime       @default(now())
+  files     EmployeeFile[]
+}
+
+model EmployeeFile {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  name       String
+  path       String
+  uploadedAt DateTime @default(now())
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }

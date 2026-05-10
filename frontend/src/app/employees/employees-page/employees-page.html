@@ -1,0 +1,85 @@
+<div class="employees-page">
+  <div class="employees-header">
+    <div class="header-text">
+      <h1>Mitarbeiter</h1>
+
+      <p>Übersicht aller Mitarbeiter</p>
+    </div>
+  </div>
+
+  <div class="employees-grid">
+    @for (employee of employees; track employee.id) {
+      <div class="employee-card" (click)="openEmployee(employee)">
+        <div class="avatar">
+          <img [src]="employee.avatar || 'https://i.pravatar.cc/150'" alt="Avatar" />
+        </div>
+
+        <div class="employee-info">
+          <h3>
+            {{ employee.name }}
+          </h3>
+
+          <p>
+            {{ employee.role }}
+          </p>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<p-drawer
+  [visible]="drawerVisible"
+  (visibleChange)="drawerVisible = $event"
+  position="right"
+  [style]="{ width: '450px' }"
+  [header]="selectedEmployee?.name"
+>
+  @if (selectedEmployee) {
+    <div class="employee-details">
+      <img
+        class="detail-avatar"
+        [src]="selectedEmployee.avatar || 'https://i.pravatar.cc/200'"
+        alt="Avatar"
+      />
+
+      <div class="detail-item">
+        <label>Rolle</label>
+
+        <span>
+          {{ selectedEmployee.role }}
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <label>Telefon</label>
+
+        <span>
+          {{ selectedEmployee.phone }}
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <label>E-Mail</label>
+
+        <span>
+          {{ selectedEmployee.email }}
+        </span>
+      </div>
+
+      <div class="files-section">
+        <h3>Dateien</h3>
+
+        @for (file of selectedEmployee.files; track file.id) {
+          <a class="file-item" [href]="'http://localhost:3000' + file.path" target="_blank">
+            📄 {{ file.name }}
+          </a>
+        }
+      </div>
+
+      <div class="upload-section">
+        <input type="file" (change)="uploadFile($event, selectedEmployee)" />
+      </div>
+    </div>
+  }
+</p-drawer>
