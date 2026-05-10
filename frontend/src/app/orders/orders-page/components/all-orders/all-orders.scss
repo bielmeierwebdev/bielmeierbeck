@@ -1,0 +1,129 @@
+.orders-card {
+  background: var(--table-bg);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 24px;
+
+  padding: 1.5rem;
+
+  margin-top: 1.5rem;
+
+  overflow: hidden;
+}
+
+.orders-toolbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+
+  left: 12px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--text-secondary);
+
+  font-size: 0.9rem;
+}
+
+.search-box input {
+  width: 320px;
+
+  padding-left: 2.5rem;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid var(--border-color);
+
+  color: white;
+
+  border-radius: 12px;
+}
+
+.table-actions {
+  display: flex;
+
+  justify-content: center;
+}
+
+:host ::ng-deep .orders-table {
+  background: transparent;
+}
+
+:host ::ng-deep .orders-table .p-datatable-table-container {
+  border-radius: 18px;
+
+  overflow: hidden;
+}
+
+:host ::ng-deep .orders-table table {
+  background: transparent;
+}
+
+:host ::ng-deep .orders-table th {
+  background: rgba(255, 255, 255, 0.02);
+
+  color: var(--text-secondary);
+
+  border: none;
+
+  padding: 0.85rem 1rem;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+:host ::ng-deep .orders-table td {
+  background: transparent;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  padding: 0.75rem 1rem;
+
+  color: white;
+
+  font-size: 0.95rem;
+}
+
+:host ::ng-deep .orders-table tbody tr {
+  transition: 0.2s ease;
+}
+
+:host ::ng-deep .orders-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+:host ::ng-deep .orders-table .p-paginator {
+  background: transparent;
+
+  border: none;
+
+  padding-top: 1rem;
+}
+
+:host ::ng-deep .orders-table .p-datatable-tbody > tr {
+  background: transparent !important;
+}
+
+:host ::ng-deep .orders-table .p-datatable-tbody > tr > td {
+  background: transparent !important;
+}

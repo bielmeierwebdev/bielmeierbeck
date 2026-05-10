@@ -1,0 +1,75 @@
+<div class="orders-card">
+  <div class="orders-toolbar">
+    <div class="search-box">
+      <i class="pi pi-search"></i>
+
+      <input pInputText type="text" placeholder="Bestellungen suchen..." />
+    </div>
+  </div>
+
+  <p-table
+    [value]="orders"
+    [paginator]="true"
+    [rows]="8"
+    responsiveLayout="scroll"
+    styleClass="orders-table"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Kunde</th>
+
+        <th>Abholung</th>
+
+        <th>Artikel</th>
+
+        <th>Gesamt</th>
+
+        <th>Bezahlt</th>
+
+        <th>Sonderbestellung</th>
+
+        <th>Aktionen</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>
+          {{ order.customer }}
+        </td>
+
+        <td>
+          {{ order.pickupDate }}
+        </td>
+
+        <td>
+          {{ order.items }}
+        </td>
+
+        <td>{{ order.total.toFixed(2) }} €</td>
+
+        <td>
+          <p-tag
+            [value]="order.paid ? 'Bezahlt' : 'Offen'"
+            [severity]="order.paid ? 'success' : 'danger'"
+          >
+          </p-tag>
+        </td>
+
+        <td>
+          <p-tag
+            [value]="order.special ? 'Ja' : 'Nein'"
+            [severity]="order.special ? 'warn' : 'contrast'"
+          >
+          </p-tag>
+        </td>
+
+        <td>
+          <div class="table-actions">
+            <button pButton icon="pi pi-eye" text rounded></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
