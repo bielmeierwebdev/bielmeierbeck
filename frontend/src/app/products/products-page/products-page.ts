@@ -144,8 +144,9 @@ export class ProductsPage implements OnInit {
     });
 
     this.drawerVisible = true;
-  }
 
+    this.cdr.detectChanges();
+  }
   saveProduct() {
     const payload = this.productForm.value;
 
