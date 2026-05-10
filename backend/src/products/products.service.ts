@@ -35,6 +35,10 @@ export class ProductsService {
 
   findAll() {
     return this.prisma.product.findMany({
+      where: {
+        deleted: false,
+      },
+
       include: {
         prices: {
           orderBy: {
@@ -94,9 +98,13 @@ export class ProductsService {
   }
 
   remove(id: number) {
-    return this.prisma.product.delete({
+    return this.prisma.product.update({
       where: {
         id,
+      },
+
+      data: {
+        deleted: true,
       },
     });
   }

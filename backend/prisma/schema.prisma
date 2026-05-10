@@ -37,6 +37,7 @@ model Product {
   active     Boolean       @default(true)
   prices     ProductPrice[]
   createdAt  DateTime      @default(now())
+  deleted    Boolean       @default(false)
 }
 
 model ProductPrice {
