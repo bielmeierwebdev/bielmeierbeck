@@ -5,8 +5,7 @@
 
       <p>Verwalte alle Produkte der Bäckerei</p>
     </div>
-
-    <p-button label="Neues Produkt" icon="pi pi-plus"> </p-button>
+    <p-button label="Neues Produkt" icon="pi pi-plus" (onClick)="openCreateProduct()"> </p-button>
   </div>
 
   <div class="products-card">
@@ -70,9 +69,23 @@
 
           <td>
             <div class="table-actions">
-              <button pButton icon="pi pi-pencil" text rounded severity="secondary"></button>
+              <button
+                pButton
+                icon="pi pi-pencil"
+                text
+                rounded
+                severity="secondary"
+                (onClick)="openEditProduct(product)"
+              ></button>
 
-              <button pButton icon="pi pi-trash" text rounded severity="danger"></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                text
+                rounded
+                severity="danger"
+                (onClick)="deleteProduct(product)"
+              ></button>
             </div>
           </td>
         </tr>
@@ -80,3 +93,64 @@
     </p-table>
   </div>
 </div>
+<p-drawer
+  [visible]="drawerVisible"
+  (visibleChange)="drawerVisible = $event"
+  position="right"
+  [style]="{ width: '450px' }"
+  [header]="isEditMode ? 'Produkt bearbeiten' : 'Neues Produkt'"
+>
+  <form [formGroup]="productForm" class="product-form">
+    <div class="field">
+      <label>Name</label>
+
+      <input pInputText formControlName="name" />
+    </div>
+
+    <div class="field">
+      <label>Preis</label>
+
+      <input pInputText type="number" formControlName="price" />
+    </div>
+
+    <div class="field">
+      <label>Kategorie</label>
+
+      <p-select
+        [options]="categoryOptions"
+        optionLabel="label"
+        optionValue="value"
+        formControlName="category"
+      >
+      </p-select>
+    </div>
+
+    <div class="field">
+      <label>Typ</label>
+
+      <p-select
+        [options]="typeOptions"
+        optionLabel="label"
+        optionValue="value"
+        formControlName="type"
+      >
+      </p-select>
+    </div>
+
+    <div class="field">
+      <label>Aktiv</label>
+
+      <p-toggleswitch formControlName="active"> </p-toggleswitch>
+    </div>
+
+    <p-button
+      [disabled]="productForm.invalid"
+      [label]="isEditMode ? 'Speichern' : 'Produkt anlegen'"
+      icon="pi pi-save"
+      (onClick)="saveProduct()"
+    >
+    </p-button>
+  </form>
+</p-drawer>
+
+<p-confirmdialog></p-confirmdialog>

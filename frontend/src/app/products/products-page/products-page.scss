@@ -169,3 +169,47 @@
   color: white !important;
   border: none;
 }
+
+.product-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1.2rem;
+
+  margin-top: 1rem;
+}
+
+.field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+}
+
+.field label {
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  color: var(--text-secondary);
+}
+
+:host ::ng-deep .p-inputtext {
+  width: 100%;
+}
+
+:host ::ng-deep .p-select {
+  width: 100%;
+}
+
+:host ::ng-deep .p-toggleswitch {
+  margin-top: 0.3rem;
+}
+
+.product-form .p-button {
+  width: 100%;
+
+  margin-top: 1rem;
+}
