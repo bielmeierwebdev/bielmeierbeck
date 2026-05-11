@@ -1,4 +1,4 @@
-<div class="create-order-layout" *ngIf="products.length">
+<div class="create-order-layout">
   <div class="left-side">
     <div class="customer-section">
       <div class="customer-header">
@@ -45,6 +45,7 @@
       </div>
     </div>
   </div>
+
   <div class="cart-section">
     <h2>Bestellung</h2>
 
@@ -69,7 +70,10 @@
         </div>
 
         <div class="cart-right">
-          <div class="cart-price">{{ (item.quantity * item.prices[0].price).toFixed(2) }} €</div>
+          <div class="cart-price">
+            {{ (item.quantity * item.prices[0].price).toFixed(2) }}
+            €
+          </div>
 
           <button class="remove-btn" (click)="removeProduct(item)">✕</button>
         </div>
@@ -80,10 +84,22 @@
       <div class="cart-total">
         <span> Gesamt </span>
 
-        <strong> {{ getTotal().toFixed(2) }} € </strong>
+        <strong>
+          {{ getTotal().toFixed(2) }}
+          €
+        </strong>
       </div>
 
       <button class="save-order-btn" (click)="saveOrder()">Bestellung speichern</button>
+
+      <button
+        type="button"
+        *ngIf="aiAnalysisResult !== null"
+        class="save-order-btn"
+        (click)="nextAiOrder()"
+      >
+        Nächste KI Bestellung
+      </button>
     </div>
   </div>
 </div>
@@ -91,8 +107,12 @@
 <p-dialog
   [(visible)]="aiDialogVisible"
   [modal]="true"
+  [dismissableMask]="true"
+  [closable]="true"
+  [blockScroll]="false"
   [style]="{ width: '700px' }"
   header="KI Bestellung"
+  appendTo="body"
 >
   <div class="ai-order-dialog">
     <textarea
@@ -101,19 +121,57 @@
       [(ngModel)]="aiText"
     ></textarea>
 
-    <button class="analyze-btn">Bestellung analysieren</button>
+    <button type="button" class="analyze-btn" (click)="analyzeAiText()">
+      Bestellung analysieren
+    </button>
   </div>
 </p-dialog>
+
+<!-- KI Bestätigungsdialog <p-dialog
+  [(visible)]="aiConfirmDialogVisible"
+  [modal]="true"
+  [style]="{
+    width: '500px',
+  }"
+  header="KI Analyse"
+>
+  <div class="ai-confirm-dialog">
+    <h3>Hey 👋</h3>
+
+    <p>Die KI hat erkannt:</p>
+
+    <ul>
+      <li>
+        {{ aiAnalysisResult?.orders?.length || 0 }}
+        Bestellungen
+      </li>
+
+      <li>
+        {{ aiAnalysisResult?.specialOrders?.length || 0 }}
+        Sonderbestellungen
+      </li>
+    </ul>
+
+    <p>Möchtest du die erste Bestellung laden?</p>
+
+    <div class="confirm-actions">
+      <button class="cancel-btn" (click)="aiConfirmDialogVisible = false">Abbrechen</button>
+
+      <button class="confirm-btn" (click)="confirmAiOrders()">Ja</button>
+    </div>
+  </div>
+</p-dialog>-->
 
 <p-dialog
   [(visible)]="customerDialogVisible"
   [modal]="true"
   [style]="{ width: '500px' }"
   header="Neuer Kunde"
+  appendTo="body"
 >
   <div class="customer-dialog">
     <input type="text" placeholder="Name" [(ngModel)]="newCustomer.name" />
 
-    <button class="save-customer-btn " (click)="saveCustomer()">Kunde speichern</button>
+    <button class="save-customer-btn" (click)="saveCustomer()">Kunde speichern</button>
   </div>
 </p-dialog>

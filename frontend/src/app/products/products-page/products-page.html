@@ -94,8 +94,7 @@
   </div>
 </div>
 <p-drawer
-  [visible]="drawerVisible"
-  (visibleChange)="drawerVisible = $event"
+  [(visible)]="drawerVisible"
   position="right"
   [style]="{ width: '450px' }"
   [header]="isEditMode ? 'Produkt bearbeiten' : 'Neues Produkt'"

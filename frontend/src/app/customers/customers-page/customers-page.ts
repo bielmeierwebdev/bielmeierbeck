@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { HttpClient } from '@angular/common/http';
-import { OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { FormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { AfterViewInit } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-customers-page',
@@ -29,16 +26,16 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrl: './customers-page.scss',
   providers: [ConfirmationService],
 })
-export class CustomersPage implements AfterViewInit {
+export class CustomersPage implements OnInit {
   private http = inject(HttpClient);
-  customers: any[] = [];
   private fb = inject(FormBuilder);
   private confirmationService = inject(ConfirmationService);
+  private cdr = inject(ChangeDetectorRef);
+
+  customers: any[] = [];
   drawerVisible = false;
   isEditMode = false;
   selectedCustomerId: number | null = null;
-  isLoaded = false;
-  private cdr = inject(ChangeDetectorRef);
 
   customerForm = this.fb.group({
     name: ['', Validators.required],
@@ -47,23 +44,17 @@ export class CustomersPage implements AfterViewInit {
     notes: [''],
   });
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.loadCustomers();
-    });
+  ngOnInit(): void {
+    this.loadCustomers();
   }
 
   loadCustomers() {
     this.http.get<any[]>('http://localhost:3000/customers').subscribe({
       next: (data) => {
-        this.customers = [...data];
-
+        this.customers = data;
         this.cdr.detectChanges();
       },
-
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => console.error(err),
     });
   }
 
@@ -89,25 +80,18 @@ export class CustomersPage implements AfterViewInit {
         .patch(`http://localhost:3000/customers/${this.selectedCustomerId}`, payload)
         .subscribe({
           next: () => {
-            this.loadCustomers();
-
             this.closeDrawer();
+            setTimeout(() => this.loadCustomers());
           },
-
-          error: (err) => {
-            console.error(err);
-          },
+          error: (err) => console.error(err),
         });
     } else {
       this.http.post('http://localhost:3000/customers', payload).subscribe({
         next: () => {
           this.closeDrawer();
-          this.loadCustomers();
+          setTimeout(() => this.loadCustomers());
         },
-
-        error: (err) => {
-          console.error(err);
-        },
+        error: (err) => console.error(err),
       });
     }
   }
@@ -122,24 +106,14 @@ export class CustomersPage implements AfterViewInit {
   deleteCustomer(customer: any) {
     this.confirmationService.confirm({
       header: 'Kunde löschen',
-
       message: `Möchtest du ${customer.name} wirklich löschen?`,
-
       acceptLabel: 'Löschen',
-
       rejectLabel: 'Abbrechen',
-
       acceptButtonStyleClass: 'p-button-danger',
-
       accept: () => {
         this.http.delete(`http://localhost:3000/customers/${customer.id}`).subscribe({
-          next: () => {
-            this.loadCustomers();
-          },
-
-          error: (err) => {
-            console.error(err);
-          },
+          next: () => this.loadCustomers(),
+          error: (err) => console.error(err),
         });
       },
     });

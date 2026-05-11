@@ -50,3 +50,10 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* PrimeNG Drawer Mask Fix */
+.p-overlay-mask-leave-active {
+  animation: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
