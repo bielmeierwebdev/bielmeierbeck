@@ -5,6 +5,7 @@
 
       <p>Verwalte alle Produkte der Bäckerei</p>
     </div>
+
     <p-button label="Neues Produkt" icon="pi pi-plus" (onClick)="openCreateProduct()"> </p-button>
   </div>
 
@@ -13,12 +14,18 @@
       <div class="search-box">
         <i class="pi pi-search"></i>
 
-        <input pInputText type="text" placeholder="Produkte suchen..." />
+        <input
+          pInputText
+          type="text"
+          placeholder="Produkte suchen..."
+          [(ngModel)]="searchTerm"
+          (input)="searchProducts()"
+        />
       </div>
     </div>
 
     <p-table
-      [value]="products"
+      [value]="filteredProducts"
       [paginator]="true"
       [rows]="8"
       responsiveLayout="scroll"
@@ -34,7 +41,7 @@
 
           <th>Preis</th>
 
-          <th>Aktiv</th>
+          <th>Status</th>
 
           <th class="actions-column">Aktionen</th>
         </tr>
@@ -64,7 +71,18 @@
           <td>{{ formatPrice(product) }} €</td>
 
           <td>
-            <p-toggleswitch [ngModel]="product.active"> </p-toggleswitch>
+            <div class="status-switch">
+              <p-toggleswitch
+                [ngModel]="product.active"
+                [ngModelOptions]="{ standalone: true }"
+                (onChange)="toggleProductStatus(product, $event.checked)"
+              >
+              </p-toggleswitch>
+
+              <span>
+                {{ product.active ? 'Aktiv' : 'Inaktiv' }}
+              </span>
+            </div>
           </td>
 
           <td>
@@ -93,6 +111,7 @@
     </p-table>
   </div>
 </div>
+
 <p-drawer
   [(visible)]="drawerVisible"
   position="right"
@@ -137,9 +156,13 @@
     </div>
 
     <div class="field">
-      <label>Aktiv</label>
+      <label>Status</label>
 
-      <p-toggleswitch formControlName="active"> </p-toggleswitch>
+      <p-tag
+        [value]="productForm.get('active')?.value ? 'Aktiv' : 'Inaktiv'"
+        [severity]="productForm.get('active')?.value ? 'success' : 'contrast'"
+      >
+      </p-tag>
     </div>
 
     <p-button
@@ -153,3 +176,5 @@
 </p-drawer>
 
 <p-confirmdialog></p-confirmdialog>
+
+<p-toast></p-toast>

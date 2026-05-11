@@ -13,16 +13,23 @@
       <div class="search-box">
         <i class="pi pi-search"></i>
 
-        <input pInputText type="text" placeholder="Kunden suchen..." />
+        <input
+          pInputText
+          type="text"
+          placeholder="Kunden suchen..."
+          [(ngModel)]="searchTerm"
+          (input)="searchCustomers()"
+        />
       </div>
     </div>
 
     <p-table
-      [value]="customers"
+      [value]="filteredCustomers"
       [paginator]="true"
       [rows]="6"
       responsiveLayout="scroll"
       styleClass="customers-table"
+      [loading]="isLoadingCustomers"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -107,6 +114,7 @@
     </div>
 
     <p-button
+      [loading]="isSavingCustomer"
       [disabled]="customerForm.invalid"
       [label]="isEditMode ? 'Speichern' : 'Kunde anlegen'"
       icon="pi pi-save"
@@ -117,3 +125,5 @@
 </p-drawer>
 
 <p-confirmdialog></p-confirmdialog>
+
+<p-toast></p-toast>
