@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 import { EmployeesModule } from './employees/employees.module';
 import { OrdersModule } from './orders/orders.module';
 import { SpecialOrdersModule } from './special-orders/special-orders.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SpecialOrdersModule } from './special-orders/special-orders.module';
     EmployeesModule,
     OrdersModule,
     SpecialOrdersModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
