@@ -19,6 +19,8 @@ import { CreateOrderComponent } from '../create-order/create-order';
 import { printOrderLabels } from '../../../../../shared/utils/label-pdf';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-all-orders',
@@ -34,6 +36,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DatePipe,
     CreateOrderComponent,
     ConfirmDialogModule,
+    FormsModule,
+    DialogModule,
   ],
 
   providers: [ConfirmationService],
@@ -54,15 +58,22 @@ export class AllOrdersComponent implements OnInit {
 
   selectedEditOrder: any = null;
 
+  productionListId: number | null = null;
+
   orders: any[] = [];
 
   drawerVisible = false;
   createDrawerVisible = false;
 
+  productionDialogVisible = false;
+
+  productionList: any[] = [];
+
   selectedOrder: any = null;
 
   ngOnInit(): void {
     this.loadOrders();
+    this.loadProductionList();
   }
 
   loadOrders() {
@@ -207,4 +218,223 @@ export class AllOrdersComponent implements OnInit {
 
     this.createDrawerVisible = true;
   }
+
+  openProductionList() {
+    if (this.productionList.length) {
+      this.productionDialogVisible = true;
+
+      return;
+    }
+
+    const productMap = new Map();
+
+    this.orders.forEach((order) => {
+      order.items.forEach((item: any) => {
+        const existing = productMap.get(item.product.id);
+
+        if (existing) {
+          existing.ordered += item.quantity;
+        } else {
+          productMap.set(item.product.id, {
+            productId: item.product.id,
+
+            name: item.product.name,
+
+            ordered: item.quantity,
+
+            production: item.quantity,
+          });
+        }
+      });
+    });
+
+    this.productionList = Array.from(productMap.values()).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+
+    queueMicrotask(() => {
+      this.productionDialogVisible = true;
+
+      this.cdr.markForCheck();
+    });
+  }
+
+  /*generateProductionList() {
+    const productMap = new Map();
+
+    this.orders.forEach((order) => {
+      order.items.forEach((item: any) => {
+        const existing = productMap.get(item.product.id);
+
+        if (existing) {
+          existing.ordered += item.quantity;
+        } else {
+          productMap.set(item.product.id, {
+            productId: item.product.id,
+
+            name: item.product.name,
+
+            ordered: item.quantity,
+
+            production: item.quantity,
+          });
+        }
+      });
+    });
+
+    this.productionList = Array.from(productMap.values()).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+
+    this.productionListId = null;
+
+    this.productionDialogVisible = true;
+  }*/
+
+  saveProductionList() {
+    const payload = {
+      date: new Date(),
+
+      items: this.productionList,
+    };
+
+    if (this.productionListId) {
+      this.http
+        .put(`http://localhost:3000/production-lists/${this.productionListId}`, payload)
+        .subscribe();
+    } else {
+      this.http.post('http://localhost:3000/production-lists', payload).subscribe((res: any) => {
+        this.productionListId = res.id;
+      });
+    }
+  }
+
+  printProductionList() {
+    const printWindow = window.open('', '_blank');
+
+    if (!printWindow) {
+      return;
+    }
+
+    const rows = this.productionList
+      .map(
+        (item) => `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.ordered}</td>
+          <td>${item.production}</td>
+        </tr>
+      `,
+      )
+      .join('');
+
+    printWindow.document.write(`
+    <html>
+      <head>
+        <title>
+          Produktionsliste
+        </title>
+
+        <style>
+          body {
+            font-family:
+              Arial, sans-serif;
+
+            padding: 30px;
+          }
+
+          h1 {
+            margin-bottom: 24px;
+          }
+
+          table {
+            width: 100%;
+
+            border-collapse:
+              collapse;
+          }
+
+          th,
+          td {
+            border:
+              1px solid #ccc;
+
+            padding: 12px;
+
+            text-align: left;
+          }
+
+          th {
+            background:
+              #f3f3f3;
+          }
+        </style>
+      </head>
+
+      <body>
+        <h1>
+          Produktionsliste
+        </h1>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Produkt</th>
+              <th>Bestellt</th>
+              <th>Produktion</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `);
+
+    printWindow.document.close();
+
+    printWindow.print();
+  }
+
+  loadProductionList() {
+    this.http.get<any>('http://localhost:3000/production-lists/saturday').subscribe({
+      next: (data) => {
+        if (!data) {
+          return;
+        }
+
+        this.productionListId = data.id;
+
+        this.productionList = data.items.map((item: any) => ({
+          name: item.productName,
+
+          ordered: item.orderedQuantity,
+
+          production: item.productionAmount,
+        }));
+
+        this.productionDialogVisible = true;
+
+        this.cdr.markForCheck();
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  /*regenerateProductionList() {
+    this.confirmationService.confirm({
+      header: 'Produktionsliste neu generieren',
+
+      message: 'Die bestehende Produktionsliste wird überschrieben. Fortfahren?',
+
+      accept: () => {
+        this.generateProductionList();
+      },
+    });
+  }*/
 }

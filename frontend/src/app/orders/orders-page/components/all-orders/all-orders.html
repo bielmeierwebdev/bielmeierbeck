@@ -23,6 +23,14 @@
       ></button>
       <button
         pButton
+        icon="pi pi-list"
+        label="Produktionsliste"
+        class="create-order-btn product-btn"
+        (click)="openProductionList()"
+        [disabled]="orders.length === 0"
+      ></button>
+      <button
+        pButton
         icon="pi pi-check"
         label="Samstag abschließen"
         class="create-order-btn complete-btn"
@@ -208,3 +216,49 @@
 </p-drawer>
 
 <p-confirmdialog></p-confirmdialog>
+
+<p-dialog
+  [(visible)]="productionDialogVisible"
+  [modal]="true"
+  [style]="{
+    width: '700px',
+  }"
+  header="Produktionsliste"
+>
+  <div class="production-list">
+    <div class="production-row" *ngFor="let item of productionList">
+      <div class="production-name">
+        {{ item.name }}
+      </div>
+
+      <div class="production-ordered">
+        Bestellt:
+        <strong>
+          {{ item.ordered }}
+        </strong>
+      </div>
+
+      <input type="number" [(ngModel)]="item.production" />
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button
+      pButton
+      icon="pi pi-refresh"
+      label="Neu generieren"
+      class="p-button-secondary"
+      (click)="openProductionList()"
+    ></button>
+
+    <button pButton icon="pi pi-save" label="Speichern" (click)="saveProductionList()"></button>
+
+    <button
+      pButton
+      icon="pi pi-print"
+      label="Drucken"
+      class="p-button-secondary"
+      (click)="printProductionList()"
+    ></button>
+  </div>
+</p-dialog>

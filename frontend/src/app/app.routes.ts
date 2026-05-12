@@ -32,6 +32,14 @@ export const routes: Routes = [
         path: 'products',
         component: ProductsPage,
       },
+      {
+        path: 'orders',
+        component: OrdersPage,
+      },
+      {
+        path: 'employees',
+        component: EmployeesPage,
+      },
     ],
   },
 ];
