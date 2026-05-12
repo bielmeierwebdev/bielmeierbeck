@@ -16,6 +16,7 @@ import { DrawerModule } from 'primeng/drawer';
 
 import { TooltipModule } from 'primeng/tooltip';
 import { CreateOrderComponent } from '../create-order/create-order';
+import { printOrderLabels } from '../../../../../shared/utils/label-pdf';
 
 @Component({
   selector: 'app-all-orders',
@@ -128,5 +129,9 @@ export class AllOrdersComponent implements OnInit {
     setTimeout(() => {
       this.loadOrders();
     }, 150);
+  }
+
+  async printLabels() {
+    await printOrderLabels(this.orders);
   }
 }

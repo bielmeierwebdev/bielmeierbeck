@@ -5,13 +5,22 @@
 
       <input pInputText type="text" placeholder="Bestellungen suchen..." />
     </div>
-    <button
-      pButton
-      icon="pi pi-plus"
-      label="Bestellung anlegen"
-      class="create-order-btn"
-      (click)="createDrawerVisible = true"
-    ></button>
+    <div class="button-group">
+      <button
+        pButton
+        icon="pi pi-print"
+        label="Etiketten drucken"
+        class="create-order-btn printButton"
+        (click)="printLabels()"
+      ></button>
+      <button
+        pButton
+        icon="pi pi-plus"
+        label="Bestellung anlegen"
+        class="create-order-btn"
+        (click)="createDrawerVisible = true"
+      ></button>
+    </div>
   </div>
 
   <p-table

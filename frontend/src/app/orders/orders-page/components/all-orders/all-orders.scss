@@ -272,10 +272,23 @@
 
 .create-order-btn {
   background: #a32626;
-color: white !important;
+  color: white !important;
   border: none;
 }
 
 .create-order-btn:hover {
   background: #c53030;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.printButton {
+  background: #3b2f27;
+
+  color: white !important;
+
+  border: none;
 }
