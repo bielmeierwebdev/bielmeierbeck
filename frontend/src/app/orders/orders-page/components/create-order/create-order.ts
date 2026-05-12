@@ -3,6 +3,8 @@ import {
   OnInit,
   inject,
   Output,
+  OnChanges,
+  Input,
   EventEmitter,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-create-order',
@@ -19,8 +22,11 @@ import { DialogModule } from 'primeng/dialog';
   styleUrl: './create-order.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateOrderComponent implements OnInit {
+export class CreateOrderComponent implements OnInit, OnChanges {
   @Output() orderSaved = new EventEmitter<void>();
+
+  @Input()
+  editOrder: any = null;
 
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
@@ -44,7 +50,44 @@ export class CreateOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+
     this.loadCustomers();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['editOrder']) {
+      if (this.editOrder) {
+        this.loadEditOrder();
+      } else {
+        this.resetOrder();
+      }
+    }
+  }
+
+  loadEditOrder() {
+    this.selectedCustomer = this.editOrder.customer;
+
+    this.customerSearch = this.editOrder.customer?.name || '';
+
+    this.pickupDate = this.editOrder.pickupDate?.split('T')[0];
+
+    this.notes = this.editOrder.notes || '';
+
+    this.paid = this.editOrder.paid;
+
+    this.cart = this.editOrder.items.map((item: any) => ({
+      ...item.product,
+
+      quantity: item.quantity,
+
+      prices: [
+        {
+          price: item.unitPrice,
+        },
+      ],
+    }));
+
+    this.cdr.markForCheck();
   }
 
   getNextSaturday() {
@@ -149,9 +192,11 @@ export class CreateOrderComponent implements OnInit {
       })),
     };
 
-    console.log(JSON.stringify(payload, null, 2));
+    const request = this.editOrder
+      ? this.http.patch(`http://localhost:3000/orders/${this.editOrder.id}`, payload)
+      : this.http.post('http://localhost:3000/orders', payload);
 
-    this.http.post('http://localhost:3000/orders', payload).subscribe({
+    request.subscribe({
       next: () => {
         const hasMoreOrders =
           this.aiAnalysisResult &&
@@ -167,7 +212,6 @@ export class CreateOrderComponent implements OnInit {
           this.resetOrder();
 
           this.orderSaved.emit();
-
         }
 
         this.cdr.markForCheck();

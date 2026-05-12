@@ -12,13 +12,22 @@
         label="Etiketten drucken"
         class="create-order-btn printButton"
         (click)="printLabels()"
+        [disabled]="orders.length === 0"
       ></button>
       <button
         pButton
         icon="pi pi-plus"
         label="Bestellung anlegen"
         class="create-order-btn"
-        (click)="createDrawerVisible = true"
+        (click)="openCreateOrder()"
+      ></button>
+      <button
+        pButton
+        icon="pi pi-check"
+        label="Samstag abschließen"
+        class="create-order-btn complete-btn"
+        (click)="completeSaturdayOrders()"
+        [disabled]="orders.length === 0"
       ></button>
     </div>
   </div>
@@ -82,7 +91,34 @@
 
         <td>
           <div class="table-actions">
-            <button pButton icon="pi pi-eye" text rounded (click)="openOrder(order)"></button>
+            <div class="table-actions">
+              <button
+                pButton
+                icon="pi pi-eye"
+                text
+                rounded
+                severity="secondary"
+                (click)="openOrder(order)"
+              ></button>
+
+              <button
+                pButton
+                icon="pi pi-pencil"
+                text
+                rounded
+                severity="secondary"
+                (click)="editOrder(order)"
+              ></button>
+
+              <button
+                pButton
+                icon="pi pi-trash"
+                text
+                rounded
+                severity="danger"
+                (click)="deleteOrder(order)"
+              ></button>
+            </div>
           </div>
         </td>
       </tr>
@@ -168,5 +204,7 @@
   [style]="{ width: '1100px', maxWidth: '100vw' }"
   header="Neue Bestellung"
 >
-  <app-create-order (orderSaved)="onOrderSaved()" />
+  <app-create-order [editOrder]="selectedEditOrder" (orderSaved)="onOrderSaved()" />
 </p-drawer>
+
+<p-confirmdialog></p-confirmdialog>
