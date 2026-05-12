@@ -29,6 +29,8 @@ export async function seedAllOrders(prisma: PrismaClient) {
 
       paid: true,
 
+      completed: false,
+
       special: false,
 
       notes: 'Bitte alles geschnitten',
@@ -54,6 +56,8 @@ export async function seedAllOrders(prisma: PrismaClient) {
       pickupDate: new Date('2026-05-16T09:30:00'),
 
       paid: false,
+
+      completed: false,
 
       special: true,
 
@@ -81,6 +85,8 @@ export async function seedAllOrders(prisma: PrismaClient) {
 
       paid: true,
 
+      completed: false,
+
       special: false,
 
       notes: '',
@@ -106,6 +112,8 @@ export async function seedAllOrders(prisma: PrismaClient) {
       pickupDate: new Date('2026-05-16T10:15:00'),
 
       paid: false,
+
+      completed: false,
 
       special: true,
 
@@ -135,6 +143,8 @@ export async function seedAllOrders(prisma: PrismaClient) {
         pickupDate: order.pickupDate,
 
         paid: order.paid,
+
+        completed: order.completed,
 
         special: order.special,
 
