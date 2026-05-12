@@ -10,6 +10,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { OrdersModule } from './orders/orders.module';
 import { SpecialOrdersModule } from './special-orders/special-orders.module';
 import { AiModule } from './ai/ai.module';
+import { ProductionListsModule } from './production-lists/production-lists.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AiModule } from './ai/ai.module';
     OrdersModule,
     SpecialOrdersModule,
     AiModule,
+    ProductionListsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

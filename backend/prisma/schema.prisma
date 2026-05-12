@@ -117,3 +117,18 @@ model SpecialOrder {
   createdAt   DateTime @default(now())
 }
 
+model ProductionList {
+  id Int @id @default(autoincrement())
+  date DateTime
+  createdAt DateTime @default(now())
+  items ProductionListItem[]
+}
+
+model ProductionListItem {
+  id Int @id @default(autoincrement())
+  productName String
+  orderedQuantity Int
+  productionAmount Int
+  productionListId Int
+  productionList ProductionList @relation(fields: [productionListId], references: [id])
+}
