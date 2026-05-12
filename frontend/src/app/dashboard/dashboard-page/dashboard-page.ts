@@ -9,11 +9,20 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 
 import { ChangeDetectorRef } from '@angular/core';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-dashboard-page',
 
-  imports: [CommonModule, CardModule, ChartModule, DrawerModule, FormsModule, DialogModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    ChartModule,
+    DrawerModule,
+    FormsModule,
+    DialogModule,
+    ToggleSwitchModule,
+  ],
 
   templateUrl: './dashboard-page.html',
 
@@ -25,6 +34,8 @@ export class DashboardPage implements OnInit {
   specialOrders: any[] = [];
   currentDate = new Date();
   private cdr = inject(ChangeDetectorRef);
+
+  saturdaySweets: any[] = [];
 
   calendarDrawerVisible = false;
 
@@ -46,6 +57,8 @@ export class DashboardPage implements OnInit {
 
   ngOnInit(): void {
     this.loadSpecialOrders();
+
+    this.loadSaturdaySweets();
   }
 
   stats = [
@@ -62,28 +75,6 @@ export class DashboardPage implements OnInit {
     {
       label: 'Sonderbestellungen',
       value: 6,
-    },
-  ];
-
-  sweetProducts = [
-    {
-      name: 'Nussschnecke',
-      active: true,
-    },
-
-    {
-      name: 'Zimtschnecke',
-      active: true,
-    },
-
-    {
-      name: 'Apfeltasche',
-      active: false,
-    },
-
-    {
-      name: 'Mohnschnecke',
-      active: true,
     },
   ];
 
@@ -294,5 +285,45 @@ export class DashboardPage implements OnInit {
         date.getFullYear() === this.currentDate.getFullYear()
       );
     });
+  }
+
+  loadSaturdaySweets() {
+    this.http.get<any[]>('http://localhost:3000/products').subscribe({
+      next: (data) => {
+        queueMicrotask(() => {
+          this.saturdaySweets = data.filter((product) => product.category === 'SUESSWARE');
+
+          this.cdr.markForCheck();
+        });
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+  
+  toggleSweetProduct(product: any, active: boolean) {
+    this.http
+      .patch(`http://localhost:3000/products/${product.id}`, {
+        name: product.name,
+
+        type: product.type,
+
+        category: product.category,
+
+        active,
+      })
+      .subscribe({
+        next: () => {
+          product.active = active;
+
+          this.cdr.markForCheck();
+        },
+
+        error: (err) => {
+          console.error(err);
+        },
+      });
   }
 }

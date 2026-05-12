@@ -9,27 +9,28 @@ import { DashboardPage } from './dashboard/dashboard-page/dashboard-page';
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+
+  {
+    path: '',
     component: MainLayout,
+
     children: [
       {
         path: 'dashboard',
         component: DashboardPage,
       },
+
       {
         path: 'customers',
         component: CustomersPage,
       },
+
       {
         path: 'products',
         component: ProductsPage,
-      },
-      {
-        path: 'orders',
-        component: OrdersPage,
-      },
-      {
-        path: 'employees',
-        component: EmployeesPage,
       },
     ],
   },
