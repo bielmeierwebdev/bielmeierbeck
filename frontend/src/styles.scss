@@ -57,3 +57,75 @@ body {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+.p-drawer {
+  background: #111111 !important;
+
+  color: white !important;
+}
+
+.p-drawer-header {
+  background: #111111 !important;
+
+  color: white !important;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.p-drawer-content {
+  background: #111111 !important;
+
+  color: white !important;
+}
+
+.p-dialog {
+  background: #111111 !important;
+
+  color: white !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.p-dialog-header {
+  background: #111111 !important;
+
+  color: white !important;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.p-dialog-content {
+  background: #111111 !important;
+
+  color: white !important;
+}
+
+.p-inputtext,
+.p-inputtextarea,
+.p-select,
+.p-dropdown {
+  background: rgba(255, 255, 255, 0.05) !important;
+
+  color: white !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.p-inputtext::placeholder,
+.p-inputtextarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 768px) {
+  .p-drawer {
+    width: 100vw !important;
+  }
+
+  .p-dialog {
+    width: calc(100vw - 2rem) !important;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+  }
+}
