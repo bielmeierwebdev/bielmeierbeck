@@ -1,24 +1,59 @@
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar" [class.open]="sidebarOpen">
     <div class="logo-area">
       <img src="logo_white.png" alt="Bielmeier Beck" />
     </div>
 
     <nav class="navigation">
-      <a routerLink="/dashboard">Dashboard</a>
-      <a routerLink="/customers">Kunden</a>
-      <a routerLink="/products">Produkte</a>
-      <a routerLink="/orders">Bestellungen</a>
-      <a routerLink="/employees">Mitarbeiter</a>
+      <a routerLink="/dashboard" (click)="sidebarOpen = false">
+        Dashboard
+      </a>
+
+      <a routerLink="/customers" (click)="sidebarOpen = false">
+        Kunden
+      </a>
+
+      <a routerLink="/products" (click)="sidebarOpen = false">
+        Produkte
+      </a>
+
+      <a routerLink="/orders" (click)="sidebarOpen = false">
+        Bestellungen
+      </a>
+
+      <a routerLink="/employees" (click)="sidebarOpen = false">
+        Mitarbeiter
+      </a>
     </nav>
   </aside>
 
+  <div
+    class="sidebar-overlay"
+    *ngIf="sidebarOpen"
+    (click)="sidebarOpen = false"
+  ></div>
+
   <div class="page-wrapper">
     <header class="topbar">
-      <div>Willkommen 👋</div>
+      <div class="topbar-left">
+        <button
+          class="mobile-menu-btn"
+          (click)="sidebarOpen = !sidebarOpen"
+        >
+          ☰
+        </button>
+
+        <div>Willkommen 👋</div>
+      </div>
+
       <div class="topbar-actions">
-        <button class="theme-btn" (click)="toggleTheme()">🌙</button>
-        <button class="logout-btn">Logout</button>
+        <button class="theme-btn" (click)="toggleTheme()">
+          🌙
+        </button>
+
+        <button class="logout-btn">
+          Logout
+        </button>
       </div>
     </header>
 

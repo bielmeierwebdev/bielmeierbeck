@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class MainLayout implements OnInit {
   darkMode = false;
+  sidebarOpen = false;
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme');

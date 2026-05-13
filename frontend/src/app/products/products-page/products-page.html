@@ -115,7 +115,7 @@
 <p-drawer
   [(visible)]="drawerVisible"
   position="right"
-  [style]="{ width: '450px' }"
+  [style]="{ width: '95vw', maxWidth: '450px' }"
   [header]="isEditMode ? 'Produkt bearbeiten' : 'Neues Produkt'"
 >
   <form [formGroup]="productForm" class="product-form">

@@ -71,7 +71,7 @@
         <h3>Dateien</h3>
 
         @for (file of selectedEmployee.files; track file.id) {
-          <a class="file-item" [href]="'http://localhost:3000' + file.path" target="_blank">
+          <a class="file-item" [href]="apiUrl + file.path" target="_blank">
             📄 {{ file.name }}
           </a>
         }

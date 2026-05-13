@@ -22,6 +22,8 @@ import { environment } from '../../../environments/environment';
 export class EmployeesPage implements OnInit {
   private http = inject(HttpClient);
 
+  apiUrl = environment.apiUrl;
+
   private cdr = inject(ChangeDetectorRef);
 
   employees: any[] = [];

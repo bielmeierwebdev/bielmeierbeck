@@ -85,7 +85,7 @@
 <p-drawer
   [(visible)]="drawerVisible"
   position="right"
-  [style]="{ width: '450px' }"
+  [style]="{ width: 'min(450px, 100vw)' }"
   [header]="isEditMode ? 'Kunde bearbeiten' : 'Neuer Kunde'"
 >
   <form [formGroup]="customerForm" class="customer-form">

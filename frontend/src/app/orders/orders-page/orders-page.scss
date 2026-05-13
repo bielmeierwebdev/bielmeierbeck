@@ -77,3 +77,43 @@
 
   border: none;
 }
+
+@media (max-width: 900px) {
+  .orders-page {
+    padding: 1rem;
+  }
+
+  .orders-card {
+    padding: 1rem;
+
+    border-radius: 18px;
+  }
+
+  .header-text h1 {
+    font-size: 1.8rem;
+  }
+
+  :host ::ng-deep .p-tablist-tab-list {
+    overflow-x: auto;
+
+    flex-wrap: nowrap;
+
+    scrollbar-width: none;
+
+    padding-bottom: 0.5rem;
+  }
+
+  :host ::ng-deep .p-tablist-tab-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  :host ::ng-deep .p-tab {
+    flex-shrink: 0;
+
+    white-space: nowrap;
+
+    font-size: 0.9rem;
+
+    padding: 0.8rem 1rem;
+  }
+}
