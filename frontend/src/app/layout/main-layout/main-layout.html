@@ -1,59 +1,34 @@
 <div class="layout">
-  <aside class="sidebar" [class.open]="sidebarOpen">
+  <button class="mobile-menu-btn" (click)="mobileMenuOpen = !mobileMenuOpen">☰</button>
+
+  <div class="mobile-overlay" *ngIf="mobileMenuOpen" (click)="mobileMenuOpen = false"></div>
+
+  <aside class="sidebar" [class.mobile-open]="mobileMenuOpen">
     <div class="logo-area">
       <img src="logo_white.png" alt="Bielmeier Beck" />
     </div>
 
     <nav class="navigation">
-      <a routerLink="/dashboard" (click)="sidebarOpen = false">
-        Dashboard
-      </a>
+      <a routerLink="/dashboard" (click)="mobileMenuOpen = false"> Dashboard </a>
 
-      <a routerLink="/customers" (click)="sidebarOpen = false">
-        Kunden
-      </a>
+      <a routerLink="/customers" (click)="mobileMenuOpen = false"> Kunden </a>
 
-      <a routerLink="/products" (click)="sidebarOpen = false">
-        Produkte
-      </a>
+      <a routerLink="/products" (click)="mobileMenuOpen = false"> Produkte </a>
 
-      <a routerLink="/orders" (click)="sidebarOpen = false">
-        Bestellungen
-      </a>
+      <a routerLink="/orders" (click)="mobileMenuOpen = false"> Bestellungen </a>
 
-      <a routerLink="/employees" (click)="sidebarOpen = false">
-        Mitarbeiter
-      </a>
+      <a routerLink="/employees" (click)="mobileMenuOpen = false"> Mitarbeiter </a>
     </nav>
   </aside>
 
-  <div
-    class="sidebar-overlay"
-    *ngIf="sidebarOpen"
-    (click)="sidebarOpen = false"
-  ></div>
-
   <div class="page-wrapper">
     <header class="topbar">
-      <div class="topbar-left">
-        <button
-          class="mobile-menu-btn"
-          (click)="sidebarOpen = !sidebarOpen"
-        >
-          ☰
-        </button>
-
-        <div>Willkommen 👋</div>
-      </div>
+      <div>Willkommen 👋</div>
 
       <div class="topbar-actions">
-        <button class="theme-btn" (click)="toggleTheme()">
-          🌙
-        </button>
+        <button class="theme-btn" (click)="toggleTheme()">🌙</button>
 
-        <button class="logout-btn">
-          Logout
-        </button>
+        <button class="logout-btn">Logout</button>
       </div>
     </header>
 
