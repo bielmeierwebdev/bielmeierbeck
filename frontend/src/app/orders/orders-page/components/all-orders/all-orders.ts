@@ -21,6 +21,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-all-orders',
@@ -78,7 +79,7 @@ export class AllOrdersComponent implements OnInit {
 
   loadOrders() {
     this.http
-      .get<any[]>('http://localhost:3000/orders')
+      .get<any[]>(`${environment.apiUrl}/orders`)
 
       .subscribe({
         next: (data) => {
@@ -168,7 +169,7 @@ export class AllOrdersComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
 
       accept: () => {
-        this.http.patch('http://localhost:3000/orders/complete-saturday', {}).subscribe({
+        this.http.patch(`${environment.apiUrl}/orders/complete-saturday`, {}).subscribe({
           next: () => {
             this.loadOrders();
           },
@@ -200,7 +201,7 @@ export class AllOrdersComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
 
       accept: () => {
-        this.http.delete(`http://localhost:3000/orders/${order.id}`).subscribe({
+        this.http.delete(`${environment.apiUrl}/orders/${order.id}`).subscribe({
           next: () => {
             this.loadOrders();
           },
@@ -300,10 +301,10 @@ export class AllOrdersComponent implements OnInit {
 
     if (this.productionListId) {
       this.http
-        .put(`http://localhost:3000/production-lists/${this.productionListId}`, payload)
+        .put(`${environment.apiUrl}/production-lists/${this.productionListId}`, payload)
         .subscribe();
     } else {
-      this.http.post('http://localhost:3000/production-lists', payload).subscribe((res: any) => {
+      this.http.post(`${environment.apiUrl}/production-lists`, payload).subscribe((res: any) => {
         this.productionListId = res.id;
       });
     }
@@ -399,7 +400,7 @@ export class AllOrdersComponent implements OnInit {
   }
 
   loadProductionList() {
-    this.http.get<any>('http://localhost:3000/production-lists/saturday').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/production-lists/saturday`).subscribe({
       next: (data) => {
         if (!data) {
           return;
@@ -414,8 +415,6 @@ export class AllOrdersComponent implements OnInit {
 
           production: item.productionAmount,
         }));
-
-        this.productionDialogVisible = true;
 
         this.cdr.markForCheck();
       },

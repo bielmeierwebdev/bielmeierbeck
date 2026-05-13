@@ -12,6 +12,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Customer } from '../../../shared/types/customer';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-customers-page',
@@ -79,7 +80,7 @@ export class CustomersPage implements OnInit {
   loadCustomers() {
     this.isLoadingCustomers = true;
 
-    this.http.get<Customer[]>('http://localhost:3000/customers').subscribe({
+    this.http.get<Customer[]>(`${environment.apiUrl}/customers`).subscribe({
       next: (data) => {
         this.customers = data;
 
@@ -167,7 +168,7 @@ export class CustomersPage implements OnInit {
 
     if (this.isEditMode && this.selectedCustomerId) {
       this.http
-        .patch(`http://localhost:3000/customers/${this.selectedCustomerId}`, payload)
+        .patch(`${environment.apiUrl}/customers/${this.selectedCustomerId}`, payload)
 
         .subscribe({
           next: () => {
@@ -205,7 +206,7 @@ export class CustomersPage implements OnInit {
           },
         });
     } else {
-      this.http.post('http://localhost:3000/customers', payload).subscribe({
+      this.http.post(`${environment.apiUrl}/customers`, payload).subscribe({
         next: () => {
           this.isSavingCustomer = false;
 
@@ -266,7 +267,7 @@ export class CustomersPage implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
 
       accept: () => {
-        this.http.delete(`http://localhost:3000/customers/${customer.id}`).subscribe({
+        this.http.delete(`${environment.apiUrl}/customers/${customer.id}`).subscribe({
           next: () => {
             this.loadCustomers();
 

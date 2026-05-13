@@ -8,6 +8,8 @@ import { DrawerModule } from 'primeng/drawer';
 
 import { ButtonModule } from 'primeng/button';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-employees-page',
 
@@ -34,7 +36,7 @@ export class EmployeesPage implements OnInit {
 
   loadEmployees() {
     this.http
-      .get<any[]>('http://localhost:3000/employees')
+      .get<any[]>(`${environment.apiUrl}/employees`)
 
       .subscribe({
         next: (data) => {
@@ -68,7 +70,7 @@ export class EmployeesPage implements OnInit {
 
     this.http
       .post(
-        `http://localhost:3000/employees/${employee.id}/files`,
+        `${environment.apiUrl}/employees/${employee.id}/files`,
 
         formData,
       )
@@ -76,7 +78,7 @@ export class EmployeesPage implements OnInit {
       .subscribe({
         next: () => {
           this.http
-            .get<any>(`http://localhost:3000/employees/${employee.id}`)
+            .get<any>(`${environment.apiUrl}/employees/${employee.id}`)
 
             .subscribe((updatedEmployee) => {
               this.selectedEmployee = updatedEmployee;

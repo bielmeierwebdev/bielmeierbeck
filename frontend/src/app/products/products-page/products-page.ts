@@ -19,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-products-page',
@@ -113,7 +114,7 @@ export class ProductsPage implements OnInit {
   }
 
   loadProducts() {
-    this.http.get<Product[]>('http://localhost:3000/products').subscribe({
+    this.http.get<Product[]>(`${environment.apiUrl}/products`).subscribe({
       next: (data) => {
         setTimeout(() => {
           this.products = data;
@@ -195,12 +196,12 @@ export class ProductsPage implements OnInit {
 
     if (this.isEditMode && this.selectedProductId) {
       this.http
-        .patch(`http://localhost:3000/products/${this.selectedProductId}`, rest)
+        .patch(`${environment.apiUrl}/products/${this.selectedProductId}`, rest)
 
         .subscribe({
           next: () => {
             this.http
-              .patch(`http://localhost:3000/products/${this.selectedProductId}/price`, {
+              .patch(`${environment.apiUrl}/products/${this.selectedProductId}/price`, {
                 price,
               })
 
@@ -247,7 +248,7 @@ export class ProductsPage implements OnInit {
         });
     } else {
       this.http
-        .post('http://localhost:3000/products', {
+        .post(`${environment.apiUrl}/products`, {
           ...rest,
 
           price,
@@ -306,7 +307,7 @@ export class ProductsPage implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
 
       accept: () => {
-        this.http.delete(`http://localhost:3000/products/${product.id}`).subscribe({
+        this.http.delete(`${environment.apiUrl}/products/${product.id}`).subscribe({
           next: () => {
             this.loadProducts();
 
@@ -359,7 +360,7 @@ export class ProductsPage implements OnInit {
 
   toggleProductStatus(product: Product, active: boolean) {
     this.http
-      .patch(`http://localhost:3000/products/${product.id}`, {
+      .patch(`${environment.apiUrl}/products/${product.id}`, {
         active,
       })
       .subscribe({

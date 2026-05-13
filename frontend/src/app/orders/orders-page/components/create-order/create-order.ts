@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { SimpleChanges } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-create-order',
@@ -99,7 +100,7 @@ export class CreateOrderComponent implements OnInit, OnChanges {
   }
 
   loadProducts() {
-    this.http.get<any[]>('http://localhost:3000/products').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/products`).subscribe({
       next: (data) => {
         this.products = data.filter((product) => product.active);
         this.cdr.markForCheck();
@@ -109,7 +110,7 @@ export class CreateOrderComponent implements OnInit, OnChanges {
   }
 
   loadCustomers() {
-    this.http.get<any[]>('http://localhost:3000/customers').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/customers`).subscribe({
       next: (data) => {
         this.customers = data;
         this.cdr.markForCheck();
@@ -193,8 +194,8 @@ export class CreateOrderComponent implements OnInit, OnChanges {
     };
 
     const request = this.editOrder
-      ? this.http.patch(`http://localhost:3000/orders/${this.editOrder.id}`, payload)
-      : this.http.post('http://localhost:3000/orders', payload);
+      ? this.http.patch(`${environment.apiUrl}/orders/${this.editOrder.id}`, payload)
+      : this.http.post(`${environment.apiUrl}/orders`, payload);
 
     request.subscribe({
       next: () => {
@@ -236,7 +237,7 @@ export class CreateOrderComponent implements OnInit, OnChanges {
   analyzeAiText() {
     (document.activeElement as HTMLElement)?.blur();
     this.http
-      .post<any>('http://localhost:3000/ai/parse-order', {
+      .post<any>(`${environment.apiUrl}/ai/parse-order`, {
         text: this.aiText,
         products: this.products.map((p) => p.name),
       })

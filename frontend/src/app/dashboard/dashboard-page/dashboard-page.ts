@@ -10,6 +10,7 @@ import { DialogModule } from 'primeng/dialog';
 
 import { ChangeDetectorRef } from '@angular/core';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -147,7 +148,7 @@ export class DashboardPage implements OnInit {
 
   loadSpecialOrders() {
     this.http
-      .get<any[]>('http://localhost:3000/special-orders')
+      .get<any[]>(`${environment.apiUrl}/special-orders`)
 
       .subscribe({
         next: (data) => {
@@ -218,7 +219,7 @@ export class DashboardPage implements OnInit {
 
     this.http
       .post(
-        'http://localhost:3000/special-orders',
+        `${environment.apiUrl}/special-orders`,
 
         {
           title: this.specialOrderForm.title,
@@ -254,7 +255,7 @@ export class DashboardPage implements OnInit {
 
   deleteSpecialOrder(id: number) {
     this.http
-      .delete(`http://localhost:3000/special-orders/${id}`)
+      .delete(`${environment.apiUrl}/special-orders/${id}`)
 
       .subscribe({
         next: () => {
@@ -288,7 +289,7 @@ export class DashboardPage implements OnInit {
   }
 
   loadSaturdaySweets() {
-    this.http.get<any[]>('http://localhost:3000/products').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/products`).subscribe({
       next: (data) => {
         queueMicrotask(() => {
           this.saturdaySweets = data.filter((product) => product.category === 'SUESSWARE');
@@ -302,10 +303,10 @@ export class DashboardPage implements OnInit {
       },
     });
   }
-  
+
   toggleSweetProduct(product: any, active: boolean) {
     this.http
-      .patch(`http://localhost:3000/products/${product.id}`, {
+      .patch(`${environment.apiUrl}/products/${product.id}`, {
         name: product.name,
 
         type: product.type,
