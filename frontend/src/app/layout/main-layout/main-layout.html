@@ -23,7 +23,7 @@
 
   <div class="page-wrapper">
     <header class="topbar">
-      <div>Willkommen 👋</div>
+      <div *ngIf="!mobileMenuOpen">Willkommen 👋</div>
 
       <div class="topbar-actions">
         <button class="theme-btn" (click)="toggleTheme()">🌙</button>
