@@ -46,6 +46,10 @@ export class DashboardPage implements OnInit {
 
   editingSpecialOrderId: number | null = null;
 
+  revenueGrowth = 0;
+
+  totalRevenue = 0;
+
   specialOrderForm = {
     title: '',
 
@@ -58,10 +62,16 @@ export class DashboardPage implements OnInit {
 
   selectedDeleteOrderId: number | null = null;
 
+  dashboardData: any = null;
+
   ngOnInit(): void {
     this.loadSpecialOrders();
 
     this.loadSaturdaySweets();
+
+    this.loadDashboardStats();
+
+    this.updateProductChart();
   }
 
   stats = [
@@ -258,7 +268,7 @@ export class DashboardPage implements OnInit {
       },
     });
   }
-  
+
   deleteSpecialOrder(id: number) {
     this.http
       .delete(`${environment.apiUrl}/special-orders/${id}`)
@@ -346,5 +356,104 @@ export class DashboardPage implements OnInit {
     };
 
     this.specialOrderFormVisible = true;
+  }
+
+  loadDashboardStats() {
+    this.http.get<any>(`${environment.apiUrl}/dashboard/stats`).subscribe({
+      next: (data) => {
+        this.stats = [
+          {
+            label: 'Bestellungen nächste Woche',
+            value: data.stats.nextWeekOrders,
+          },
+
+          {
+            label: 'Umsatz nächste Woche',
+            value: `${data.stats.nextWeekRevenue.toFixed(2)} €`,
+          },
+
+          {
+            label: 'Sonderbestellungen',
+            value: data.stats.specialOrders,
+          },
+        ];
+
+        this.revenueChartData = {
+          labels: data.revenueChart.labels,
+
+          datasets: [
+            {
+              label: 'Umsatz',
+
+              data: data.revenueChart.data,
+
+              tension: 0.4,
+            },
+          ],
+        };
+
+        const revenues = data.revenueChart.data;
+
+        this.totalRevenue = revenues.reduce((sum: number, value: number) => sum + value, 0);
+
+        if (revenues.length >= 2) {
+          const current = revenues[revenues.length - 1];
+
+          const previous = revenues[revenues.length - 2];
+
+          if (previous > 0) {
+            this.revenueGrowth = ((current - previous) / previous) * 100;
+          }
+        }
+
+        this.chartData = {
+          labels: data.ordersChart.labels,
+
+          datasets: [
+            {
+              label: 'Bestellungen',
+
+              data: data.ordersChart.data,
+            },
+          ],
+        };
+
+        this.dashboardData = data;
+
+        this.updateProductChart();
+
+        this.cdr.markForCheck();
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  updateProductChart() {
+    if (!this.dashboardData?.topProducts) {
+      return;
+    }
+
+    const products = this.dashboardData.topProducts[this.selectedChartType];
+
+    if (!products) {
+      return;
+    }
+
+    this.productChartData = {
+      labels: products.labels,
+
+      datasets: [
+        {
+          label: 'Verkäufe',
+
+          data: products.data,
+        },
+      ],
+    };
+
+    this.cdr.markForCheck();
   }
 }

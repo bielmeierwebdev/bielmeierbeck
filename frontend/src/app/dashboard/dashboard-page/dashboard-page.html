@@ -67,10 +67,10 @@
         <div>
           <div class="section-header">Umsatz pro Monat</div>
 
-          <div class="chart-subtitle">+12% zum Vormonat</div>
+          <div class="chart-subtitle">{{ revenueGrowth.toFixed(1) }}% zum Vormonat</div>
         </div>
 
-        <div class="revenue-total">33.200 €</div>
+        <div class="revenue-total">{{ totalRevenue.toFixed(2) }} €</div>
       </div>
 
       <p-chart type="line" [data]="revenueChartData"> </p-chart>
@@ -89,14 +89,14 @@
         <div class="chart-switch">
           <button
             [class.active]="selectedChartType === 'BACKWARE'"
-            (click)="selectedChartType = 'BACKWARE'"
+            (click)="selectedChartType = 'BACKWARE'; updateProductChart()"
           >
             Backwaren
           </button>
 
           <button
             [class.active]="selectedChartType === 'SUESSWARE'"
-            (click)="selectedChartType = 'SUESSWARE'"
+            (click)="selectedChartType = 'SUESSWARE'; updateProductChart()"
           >
             Süßwaren
           </button>
