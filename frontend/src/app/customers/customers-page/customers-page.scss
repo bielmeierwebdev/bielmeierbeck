@@ -9,6 +9,16 @@
   }
 }
 
+.customers-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .customers-header {
     flex-direction: column;
