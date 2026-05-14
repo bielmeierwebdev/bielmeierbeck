@@ -1,0 +1,19 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Bielmeier Beck</h1>
+
+    <p>Mitarbeiter Login</p>
+
+    <input type="email" placeholder="E-Mail" [(ngModel)]="email" />
+
+    <input type="password" placeholder="Passwort" [(ngModel)]="password" />
+
+    <button (click)="login()" [disabled]="loading">
+      {{ loading ? 'Anmelden...' : 'Login' }}
+    </button>
+
+    <div class="error" *ngIf="error">
+      {{ error }}
+    </div>
+  </div>
+</div>

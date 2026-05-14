@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-layout',
@@ -13,6 +14,14 @@ export class MainLayout implements OnInit {
   darkMode = false;
   sidebarOpen = false;
   mobileMenuOpen = false;
+
+  constructor(private router: Router) {}
+
+  logout() {
+    localStorage.removeItem('token');
+
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme');

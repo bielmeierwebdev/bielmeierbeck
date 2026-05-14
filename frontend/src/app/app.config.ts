@@ -8,9 +8,11 @@ import Aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
 
 import { MessageService } from 'primeng/api';
+import { authInterceptor } from './auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +24,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     MessageService,
   ],
 };
