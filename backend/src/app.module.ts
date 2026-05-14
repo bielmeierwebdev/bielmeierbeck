@@ -11,6 +11,7 @@ import { OrdersModule } from './orders/orders.module';
 import { SpecialOrdersModule } from './special-orders/special-orders.module';
 import { AiModule } from './ai/ai.module';
 import { ProductionListsModule } from './production-lists/production-lists.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProductionListsModule } from './production-lists/production-lists.modul
     SpecialOrdersModule,
     AiModule,
     ProductionListsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
