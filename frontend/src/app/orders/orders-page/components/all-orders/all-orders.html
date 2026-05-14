@@ -137,7 +137,7 @@
   [visible]="drawerVisible"
   (visibleChange)="drawerVisible = $event"
   position="right"
-  [style]="{ width: '1100px', maxWidth: '100vw' }"
+  [style]="{ width: '450px' }"
   header="Bestellung"
 >
   <div class="order-details" *ngIf="selectedOrder">
@@ -209,7 +209,7 @@
   (visibleChange)="createDrawerVisible = $event"
   position="right"
   [modal]="true"
-  [style]="{ width: '95vw', maxWidth: '450px' }"
+  [style]="{ width: '50vw'}"
   header="Neue Bestellung"
 >
   <app-create-order [editOrder]="selectedEditOrder" (orderSaved)="onOrderSaved()" />

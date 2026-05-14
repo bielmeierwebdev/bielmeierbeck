@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterModule],
+  imports: [RouterModule, NgIf],
   standalone: true,
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.scss'],
