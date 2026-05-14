@@ -17,7 +17,14 @@ import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-costumer.dto';
 import { UpdateCustomerDto } from './dto/update-costumer.dto';
 
-//@UseGuards(JwtAuthGuard)
+import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN, Role.TECHADMIN, Role.EMPLOYEE)
 @Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}

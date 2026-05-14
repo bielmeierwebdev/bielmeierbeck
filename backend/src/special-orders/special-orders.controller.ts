@@ -12,6 +12,14 @@ import {
 import { SpecialOrdersService } from './special-orders.service';
 import { CreateSpecialOrderDto } from './dto/create-special-order.dto';
 
+import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN, Role.TECHADMIN, Role.EMPLOYEE)
 @Controller('special-orders')
 export class SpecialOrdersController {
   constructor(private readonly specialOrdersService: SpecialOrdersService) {}

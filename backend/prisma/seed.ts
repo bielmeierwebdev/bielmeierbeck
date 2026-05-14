@@ -15,10 +15,19 @@ import { seedSpecialOrders } from './seeds/specialOrders.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('admin123', 10);
+  const hashedPassword = await bcrypt.hash(
+    process.env.SEED_ADMIN_PASSWORD!,
+    10,
+  );
 
-  await prisma.user.create({
-    data: {
+  await prisma.user.upsert({
+    where: {
+      email: 'admin@test.de',
+    },
+
+    update: {},
+
+    create: {
       email: 'admin@test.de',
 
       password: hashedPassword,

@@ -14,6 +14,14 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
+import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN, Role.TECHADMIN)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
