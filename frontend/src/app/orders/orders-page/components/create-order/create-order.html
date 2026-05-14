@@ -1,3 +1,8 @@
+<p-toast></p-toast>
+
+<div class="loading-overlay" *ngIf="savingOrder || loadingAi || savingCustomer">
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <div class="create-order-layout">
   <div class="left-side">
     <div class="customer-section">
@@ -121,8 +126,10 @@
       [(ngModel)]="aiText"
     ></textarea>
 
-    <button type="button" class="analyze-btn" (click)="analyzeAiText()">
-      Bestellung analysieren
+    <button type="button" class="analyze-btn" (click)="analyzeAiText()" [disabled]="loadingAi">
+      <i *ngIf="loadingAi" class="pi pi-spin pi-spinner"></i>
+
+      {{ loadingAi ? 'Analysiere...' : 'Bestellung analysieren' }}
     </button>
   </div>
 </p-dialog>
@@ -171,6 +178,10 @@
 >
   <div class="customer-dialog">
     <input type="text" placeholder="Name" [(ngModel)]="newCustomer.name" />
-    <button class="save-customer-btn" (click)="saveCustomer()">Kunde speichern</button>
+    <button class="save-customer-btn" (click)="saveCustomer()" [disabled]="savingCustomer">
+      <i *ngIf="savingCustomer" class="pi pi-spin pi-spinner"></i>
+
+      {{ savingCustomer ? 'Speichert...' : 'Kunde speichern' }}
+    </button>
   </div>
 </p-dialog>

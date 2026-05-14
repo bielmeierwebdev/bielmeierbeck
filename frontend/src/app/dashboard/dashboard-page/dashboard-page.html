@@ -126,7 +126,7 @@
           </strong>
 
           <div class="special-actions">
-            <button>Bearbeiten</button>
+            <button (click)="openEditSpecialOrder(order)">Bearbeiten</button>
 
             <button class="delete-btn" (click)="openDeleteDialog(order.id)">Löschen</button>
           </div>
@@ -156,9 +156,12 @@
 
 <p-dialog
   [(visible)]="specialOrderFormVisible"
+  (visibleChange)="
+    specialOrderFormVisible = $event; editingSpecialOrderId = $event ? editingSpecialOrderId : null
+  "
   [modal]="true"
   [style]="{ width: '500px' }"
-  header="Neue Sonderbestellung"
+  [header]="editingSpecialOrderId ? 'Sonderbestellung bearbeiten' : 'Neue Sonderbestellung'"
 >
   <div class="special-order-form">
     <div class="form-group">
@@ -188,7 +191,7 @@
     </div>
 
     <button class="save-special-btn" (click)="saveSpecialOrder()">
-      Sonderbestellung speichern
+      {{ editingSpecialOrderId ? 'Änderungen speichern' : 'Sonderbestellung speichern' }}
     </button>
   </div>
 </p-dialog>

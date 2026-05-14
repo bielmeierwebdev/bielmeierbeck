@@ -44,6 +44,8 @@ export class DashboardPage implements OnInit {
 
   specialOrderFormVisible = false;
 
+  editingSpecialOrderId: number | null = null;
+
   specialOrderForm = {
     title: '',
 
@@ -211,48 +213,52 @@ export class DashboardPage implements OnInit {
   saveSpecialOrder() {
     const pickupDate = new Date(
       this.currentDate.getFullYear(),
-
       this.currentDate.getMonth(),
-
       this.selectedDay!,
     );
 
-    this.http
-      .post(
-        `${environment.apiUrl}/special-orders`,
+    const payload = {
+      title: this.specialOrderForm.title,
 
-        {
-          title: this.specialOrderForm.title,
+      pickupDate,
 
-          pickupDate,
+      pickupTime: this.specialOrderForm.pickupTime,
 
-          pickupTime: this.specialOrderForm.pickupTime,
+      notes: this.specialOrderForm.notes,
+    };
 
-          notes: this.specialOrderForm.notes,
-        },
-      )
+    const request = this.editingSpecialOrderId
+      ? this.http.patch(
+          `${environment.apiUrl}/special-orders/${this.editingSpecialOrderId}`,
+          payload,
+        )
+      : this.http.post(`${environment.apiUrl}/special-orders`, payload);
 
-      .subscribe({
-        next: () => {
-          this.loadSpecialOrders();
+    request.subscribe({
+      next: () => {
+        this.loadSpecialOrders();
 
-          this.specialOrderFormVisible = false;
+        this.specialOrderFormVisible = false;
 
-          this.specialOrderForm = {
-            title: '',
+        this.editingSpecialOrderId = null;
 
-            pickupTime: '',
+        this.specialOrderForm = {
+          title: '',
 
-            notes: '',
-          };
-        },
+          pickupTime: '',
 
-        error: (err) => {
-          console.error(err);
-        },
-      });
+          notes: '',
+        };
+
+        this.cdr.markForCheck();
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
-
+  
   deleteSpecialOrder(id: number) {
     this.http
       .delete(`${environment.apiUrl}/special-orders/${id}`)
@@ -326,5 +332,19 @@ export class DashboardPage implements OnInit {
           console.error(err);
         },
       });
+  }
+
+  openEditSpecialOrder(order: any) {
+    this.editingSpecialOrderId = order.id;
+
+    this.specialOrderForm = {
+      title: order.title || '',
+
+      pickupTime: order.pickupTime || '',
+
+      notes: order.notes || '',
+    };
+
+    this.specialOrderFormVisible = true;
   }
 }

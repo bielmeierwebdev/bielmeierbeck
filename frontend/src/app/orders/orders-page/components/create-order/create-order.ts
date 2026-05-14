@@ -15,10 +15,13 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { SimpleChanges } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-order',
-  imports: [CommonModule, FormsModule, DialogModule],
+  imports: [CommonModule, FormsModule, DialogModule, ToastModule, ProgressSpinnerModule],
   templateUrl: './create-order.html',
   styleUrl: './create-order.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +34,12 @@ export class CreateOrderComponent implements OnInit, OnChanges {
 
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
+  private messageService = inject(MessageService);
+
+  savingOrder = false;
+  loadingAi = false;
+  loadingProducts = false;
+  savingCustomer = false;
 
   products: any[] = [];
   cart: any[] = [];
@@ -170,10 +179,16 @@ export class CreateOrderComponent implements OnInit, OnChanges {
 
   saveOrder() {
     if (!this.selectedCustomer) {
-      alert('Bitte Kunde auswählen 🙂');
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Kunde fehlt',
+        detail: 'Bitte Kunde auswählen 🙂',
+      });
 
       return;
     }
+
+    this.savingOrder = true;
 
     const payload = {
       customerId: this.selectedCustomer?.id,
@@ -199,6 +214,14 @@ export class CreateOrderComponent implements OnInit, OnChanges {
 
     request.subscribe({
       next: () => {
+        this.savingOrder = false;
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Gespeichert',
+          detail: this.editOrder ? 'Bestellung aktualisiert 🎉' : 'Bestellung erstellt 🎉',
+        });
+
         const hasMoreOrders =
           this.aiAnalysisResult &&
           this.currentAiOrderIndex < this.aiAnalysisResult.orders.length - 1;
@@ -208,6 +231,11 @@ export class CreateOrderComponent implements OnInit, OnChanges {
 
           this.loadAiOrder();
         } else {
+          // Sonderbestellungen NUR einmal speichern
+          if (this.aiAnalysisResult?.specialOrders?.length) {
+            this.saveAiSpecialOrders();
+          }
+
           this.aiAnalysisResult = null;
 
           this.resetOrder();
@@ -217,24 +245,109 @@ export class CreateOrderComponent implements OnInit, OnChanges {
 
         this.cdr.markForCheck();
       },
-      error: (err) => console.error(err),
+
+      error: (err) => {
+        this.savingOrder = false;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: 'Bestellung konnte nicht gespeichert werden',
+        });
+
+        console.error(err);
+
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  saveAiSpecialOrders() {
+    const specialOrders = this.aiAnalysisResult?.specialOrders || [];
+
+    specialOrders.forEach((special: any) => {
+      this.http
+        .post(`${environment.apiUrl}/special-orders`, {
+          title: special.title,
+
+          pickupDate: special.pickupDate,
+
+          pickupTime: special.pickupTime || '08:00',
+
+          notes: `
+Kunde: ${special.customerName || 'Unbekannt'}
+
+Erstellt aus KI Bestellung
+
+Originalnachricht:
+${this.aiText}
+`.trim(),
+        })
+        .subscribe({
+          next: () => {
+            console.log('Sonderbestellung gespeichert');
+          },
+
+          error: (err) => {
+            console.error('Fehler Sonderbestellung', err);
+          },
+        });
     });
   }
 
   saveCustomer() {
-    this.http.post<any>('http://localhost:3000/customers', this.newCustomer).subscribe({
+    if (!this.newCustomer.name.trim()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Name fehlt',
+        detail: 'Bitte Kundennamen eingeben',
+      });
+
+      return;
+    }
+
+    this.savingCustomer = true;
+
+    this.http.post<any>(`${environment.apiUrl}/customers`, this.newCustomer).subscribe({
       next: (customer) => {
+        this.savingCustomer = false;
+
         this.customers.push(customer);
+
         this.newCustomer = { name: '' };
+
         this.customerDialogVisible = false;
+
         this.selectCustomer(customer);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Kunde erstellt',
+          detail: `${customer.name} wurde gespeichert`,
+        });
+
         this.cdr.markForCheck();
       },
-      error: (err) => console.error(err),
+
+      error: (err) => {
+        this.savingCustomer = false;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: 'Kunde konnte nicht gespeichert werden',
+        });
+
+        console.error(err);
+
+        this.cdr.markForCheck();
+      },
     });
   }
 
   analyzeAiText() {
+    this.loadingAi = true;
+
     (document.activeElement as HTMLElement)?.blur();
     this.http
       .post<any>(`${environment.apiUrl}/ai/parse-order`, {
@@ -243,6 +356,14 @@ export class CreateOrderComponent implements OnInit, OnChanges {
       })
       .subscribe({
         next: (result) => {
+          this.loadingAi = false;
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'KI Analyse fertig',
+            detail: `${result.orders?.length || 0} Bestellungen erkannt`,
+          });
+
           this.aiAnalysisResult = result;
           this.currentAiOrderIndex = 0;
           this.aiDialogVisible = false;
@@ -251,7 +372,19 @@ export class CreateOrderComponent implements OnInit, OnChanges {
             this.cdr.markForCheck();
           }, 100);
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          this.loadingAi = false;
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'KI Fehler',
+            detail: 'Analyse fehlgeschlagen',
+          });
+
+          console.error(err);
+
+          this.cdr.markForCheck();
+        },
       });
   }
 
@@ -282,8 +415,11 @@ export class CreateOrderComponent implements OnInit, OnChanges {
     this.customerSearch = '';
     this.filteredCustomers = [];
 
+    console.log('AI RESULT', this.aiAnalysisResult);
+    console.log('CURRENT ORDER', order);
+
     const newCart: any[] = [];
-    order.items.forEach((parsedItem: any) => {
+    (order.items || []).forEach((parsedItem: any) => {
       const normalizedAiName = parsedItem.productName.toLowerCase().trim();
       const product = this.products.find((p) => {
         const normalizedProduct = p.name.toLowerCase().trim();
@@ -298,7 +434,11 @@ export class CreateOrderComponent implements OnInit, OnChanges {
     });
     this.cart = newCart;
 
-    const aiCustomerParts = order.customerName.toLowerCase().trim().split(' ').filter(Boolean);
+    const aiCustomerParts = (order.customerName || '')
+      .toLowerCase()
+      .trim()
+      .split(' ')
+      .filter(Boolean);
 
     console.log('AI Customer:', order.customerName);
 
