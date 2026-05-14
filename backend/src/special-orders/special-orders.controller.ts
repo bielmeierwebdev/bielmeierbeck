@@ -29,7 +29,7 @@ export class SpecialOrdersController {
     return this.specialOrdersService.create({
       ...body,
 
-      pickupDate: body.pickupDate,
+      pickupDate: new Date(body.pickupDate),
     });
   }
 
@@ -47,7 +47,7 @@ export class SpecialOrdersController {
       {
         ...body,
 
-        pickupDate: body.pickupDate,
+        pickupDate: new Date(body.pickupDate),
       },
     );
   }
