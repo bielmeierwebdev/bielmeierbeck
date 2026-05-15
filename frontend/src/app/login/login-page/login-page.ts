@@ -26,7 +26,7 @@ export class LoginPage {
 
   private router = inject(Router);
 
-  email = '';
+  username = '';
 
   password = '';
 
@@ -41,7 +41,7 @@ export class LoginPage {
 
     this.http
       .post<any>(`${environment.apiUrl}/auth/login`, {
-        email: this.email,
+        username: this.username,
 
         password: this.password,
       })
