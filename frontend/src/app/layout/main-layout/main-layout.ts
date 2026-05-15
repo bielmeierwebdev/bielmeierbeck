@@ -1,19 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
+
 import { NgIf } from '@angular/common';
+
 import { Router } from '@angular/router';
+
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-main-layout',
+
   imports: [RouterModule, NgIf],
+
   standalone: true,
+
   templateUrl: './main-layout.html',
+
   styleUrls: ['./main-layout.scss'],
 })
 export class MainLayout implements OnInit {
   darkMode = false;
+
   sidebarOpen = false;
+
   mobileMenuOpen = false;
+
+  role = '';
 
   constructor(private router: Router) {}
 
@@ -29,6 +42,22 @@ export class MainLayout implements OnInit {
     if (savedTheme === 'dark') {
       this.enableDarkMode();
     }
+
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const decoded: any = jwtDecode(token);
+
+      this.role = decoded.role;
+    }
+  }
+
+  isAdmin() {
+    return this.role === 'ADMIN' || this.role === 'TECHADMIN';
+  }
+
+  isTechAdmin() {
+    return this.role === 'TECHADMIN';
   }
 
   toggleTheme() {
