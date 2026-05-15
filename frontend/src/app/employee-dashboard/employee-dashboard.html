@@ -1,0 +1,96 @@
+<div class="employee-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Bestellungen Samstag</span>
+
+      <strong class="stat-value">
+        {{ stats.saturdayOrders }}
+      </strong>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-label">Sonderbestellungen</span>
+
+      <strong class="stat-value">
+        {{ stats.specialOrders }}
+      </strong>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-label">Aktive Süßwaren</span>
+
+      <strong class="stat-value">
+        {{ saturdaySweets.length }}
+      </strong>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-label">Offene Produktion</span>
+
+      <strong class="stat-value danger">
+        {{ openProduction }}
+      </strong>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h2>Sonderbestellungen</h2>
+      </div>
+
+      <div class="special-orders">
+        <div class="special-order" *ngFor="let order of specialOrders">
+          <div class="special-top">
+            <strong>{{ order.title }}</strong>
+
+            <span>{{ order.pickupTime }} Uhr</span>
+          </div>
+
+          <p>{{ order.notes }}</p>
+        </div>
+
+        <div *ngIf="!specialOrders.length" class="empty-state">Keine Sonderbestellungen</div>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h2>Süßwaren Samstag</h2>
+      </div>
+
+      <div class="sweets-list">
+        <div class="sweet-item" *ngFor="let sweet of saturdaySweets">
+          <span>{{ sweet.name }}</span>
+
+          <strong>{{ sweet.ordered }} bestellt</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-card production-card">
+    <div class="card-header">
+      <h2>Produktionsstatus</h2>
+    </div>
+
+    <div class="production-list">
+      <div class="production-item" *ngFor="let item of productionStatus">
+        <div class="production-left">
+          <strong>{{ item.product }}</strong>
+
+          <span> {{ item.produced }} / {{ item.ordered }} </span>
+        </div>
+
+        <div
+          class="production-status"
+          [class.done]="item.produced >= item.ordered"
+          [class.partial]="item.produced > 0 && item.produced < item.ordered"
+          [class.open]="item.produced === 0"
+        >
+          {{ item.produced >= item.ordered ? 'Fertig' : item.produced > 0 ? 'Teilweise' : 'Offen' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

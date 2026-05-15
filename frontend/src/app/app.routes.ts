@@ -12,9 +12,13 @@ import { OrdersPage } from './orders/orders-page/orders-page';
 
 import { DashboardPage } from './dashboard/dashboard-page/dashboard-page';
 
+import { EmployeeDashboardPage } from './employee-dashboard/employee-dashboard';
+
 import { LoginPage } from './login/login-page/login-page';
 
 import { authGuard } from './auth/auth-guard';
+
+import { roleGuard } from './auth/role-guard';
 
 export const routes: Routes = [
   {
@@ -43,18 +47,32 @@ export const routes: Routes = [
         path: 'dashboard',
 
         component: DashboardPage,
+
+        canActivate: [roleGuard(['ADMIN', 'TECHADMIN'])],
+      },
+
+      {
+        path: 'employee-dashboard',
+
+        component: EmployeeDashboardPage,
+
+        canActivate: [roleGuard(['EMPLOYEE'])],
       },
 
       {
         path: 'customers',
 
         component: CustomersPage,
+
+        canActivate: [roleGuard(['ADMIN', 'TECHADMIN'])],
       },
 
       {
         path: 'products',
 
         component: ProductsPage,
+
+        canActivate: [roleGuard(['ADMIN', 'TECHADMIN'])],
       },
 
       {
@@ -67,14 +85,8 @@ export const routes: Routes = [
         path: 'employees',
 
         component: EmployeesPage,
-      },
 
-      {
-        path: '',
-
-        redirectTo: 'dashboard',
-
-        pathMatch: 'full',
+        canActivate: [roleGuard(['ADMIN', 'TECHADMIN'])],
       },
     ],
   },
