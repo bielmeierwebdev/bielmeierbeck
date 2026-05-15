@@ -30,6 +30,10 @@ export class MainLayout implements OnInit {
 
   constructor(private router: Router) {}
 
+  isEmployee() {
+    return this.role === 'EMPLOYEE';
+  }
+
   logout() {
     localStorage.removeItem('token');
 

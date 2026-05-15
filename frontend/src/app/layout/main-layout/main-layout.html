@@ -10,6 +10,10 @@
         Dashboard
       </a>
 
+      <a *ngIf="isEmployee()" routerLink="/app/employee-dashboard" (click)="mobileMenuOpen = false">
+        Mitarbeiter Dashboard
+      </a>
+
       <a *ngIf="isAdmin()" routerLink="/app/customers" (click)="mobileMenuOpen = false"> Kunden </a>
 
       <a *ngIf="isAdmin()" routerLink="/app/products" (click)="mobileMenuOpen = false">
