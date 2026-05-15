@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
 
+import { jwtDecode } from 'jwt-decode';
+
 @Component({
   selector: 'app-login-page',
 
@@ -50,7 +52,13 @@ export class LoginPage {
         next: (response) => {
           localStorage.setItem('token', response.access_token);
 
-          this.router.navigate(['/app/dashboard']);
+          const decoded: any = jwtDecode(response.access_token);
+
+          if (decoded.role === 'EMPLOYEE') {
+            this.router.navigate(['/app/employee-dashboard']);
+          } else {
+            this.router.navigate(['/app/dashboard']);
+          }
         },
 
         error: () => {
