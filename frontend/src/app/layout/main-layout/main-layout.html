@@ -1,13 +1,36 @@
-<nav class="navigation">
-  <a *ngIf="isAdmin()" routerLink="/app/dashboard" (click)="mobileMenuOpen = false"> Dashboard </a>
+<div class="layout">
+  <button class="mobile-menu-btn" (click)="mobileMenuOpen = !mobileMenuOpen"></button>
+  <div class="mobile-overlay" *ngIf="mobileMenuOpen" (click)="mobileMenuOpen = false"></div>
+  <aside class="sidebar" [class.mobile-open]="mobileMenuOpen">
+    <div class="logo-area">
+      <img src="logo_white.png" alt="Bielmeier Beck" />
+    </div>
+    <nav class="navigation">
+      <a *ngIf="isAdmin()" routerLink="/app/dashboard" (click)="mobileMenuOpen = false">
+        Dashboard
+      </a>
 
-  <a *ngIf="isAdmin()" routerLink="/app/customers" (click)="mobileMenuOpen = false"> Kunden </a>
+      <a *ngIf="isAdmin()" routerLink="/app/customers" (click)="mobileMenuOpen = false"> Kunden </a>
 
-  <a *ngIf="isAdmin()" routerLink="/app/products" (click)="mobileMenuOpen = false"> Produkte </a>
+      <a *ngIf="isAdmin()" routerLink="/app/products" (click)="mobileMenuOpen = false">
+        Produkte
+      </a>
 
-  <a routerLink="/app/orders" (click)="mobileMenuOpen = false"> Bestellungen </a>
+      <a routerLink="/app/orders" (click)="mobileMenuOpen = false"> Bestellungen </a>
 
-  <a *ngIf="isTechAdmin()" routerLink="/app/employees" (click)="mobileMenuOpen = false">
-    Mitarbeiter
-  </a>
-</nav>
+      <a *ngIf="isTechAdmin()" routerLink="/app/employees" (click)="mobileMenuOpen = false">
+        Mitarbeiter
+      </a>
+    </nav>
+  </aside>
+  <div class="page-wrapper">
+    <header class="topbar">
+      <div *ngIf="!mobileMenuOpen">Willkommen 👋</div>
+      <div class="topbar-actions">
+        <button class="theme-btn" (click)="toggleTheme()">🌙</button>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+    </header>
+    <main class="content"><router-outlet></router-outlet></main>
+  </div>
+</div>
