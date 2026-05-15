@@ -1,5 +1,5 @@
 <div class="layout">
-  <button class="mobile-menu-btn" (click)="mobileMenuOpen = !mobileMenuOpen"></button>
+  <button class="mobile-menu-btn" (click)="mobileMenuOpen = !mobileMenuOpen">☰</button>
   <div class="mobile-overlay" *ngIf="mobileMenuOpen" (click)="mobileMenuOpen = false"></div>
   <aside class="sidebar" [class.mobile-open]="mobileMenuOpen">
     <div class="logo-area">
