@@ -15,24 +15,124 @@ import { seedSpecialOrders } from './seeds/specialOrders.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash(
-    process.env.SEED_ADMIN_PASSWORD!,
+  const defaultPassword = await bcrypt.hash(
+    process.env.SEED_ADMIN_PASSWORD || 'admin123',
     10,
   );
 
+  // TECHADMIN
   await prisma.user.upsert({
     where: {
-      email: 'admin@test.de',
+      username: 'sophie',
     },
 
     update: {},
 
     create: {
-      email: 'admin@test.de',
+      username: 'sophie',
 
-      password: hashedPassword,
+      password: defaultPassword,
+
+      role: Role.TECHADMIN,
+    },
+  });
+
+  // ADMIN
+  await prisma.user.upsert({
+    where: {
+      username: 'patrick',
+    },
+
+    update: {},
+
+    create: {
+      username: 'patrick',
+
+      password: defaultPassword,
 
       role: Role.ADMIN,
+    },
+  });
+
+  // ADMIN
+  await prisma.user.upsert({
+    where: {
+      username: 'anna',
+    },
+
+    update: {},
+
+    create: {
+      username: 'anna',
+
+      password: defaultPassword,
+
+      role: Role.ADMIN,
+    },
+  });
+
+  // EMPLOYEE
+  await prisma.user.upsert({
+    where: {
+      username: 'julia',
+    },
+
+    update: {},
+
+    create: {
+      username: 'julia',
+
+      password: defaultPassword,
+
+      role: Role.EMPLOYEE,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: {
+      username: 'melanie',
+    },
+
+    update: {},
+
+    create: {
+      username: 'melanie',
+
+      password: defaultPassword,
+
+      role: Role.EMPLOYEE,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: {
+      username: 'maria',
+    },
+
+    update: {},
+
+    create: {
+      username: 'maria',
+
+      password: defaultPassword,
+
+      role: Role.EMPLOYEE,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: {
+      username: 'sophie',
+    },
+
+    update: {},
+
+    create: {
+      username: 'sophie',
+
+      password: defaultPassword,
+
+      role: Role.TECHADMIN,
     },
   });
 

@@ -16,8 +16,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
-    const existingUser = await this.usersService.findByEmail(email);
+  async register(username: string, password: string) {
+    const existingUser = await this.usersService.findByUsername(username);
 
     if (existingUser) {
       throw new BadRequestException('User already exists');
@@ -26,18 +26,18 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await this.usersService.create({
-      email,
+      username,
       password: hashedPassword,
     });
 
     return {
       id: user.id,
-      email: user.email,
+      username: user.username,
     };
   }
 
-  async login(email: string, password: string) {
-    const user = await this.usersService.findByEmail(email);
+  async login(username: string, password: string) {
+    const user = await this.usersService.findByUsername(username);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -51,7 +51,7 @@ export class AuthService {
 
     const payload = {
       sub: user.id,
-      email: user.email,
+      username: user.username,
       role: user.role,
     };
 
