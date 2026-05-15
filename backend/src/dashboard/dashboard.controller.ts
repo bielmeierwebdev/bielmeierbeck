@@ -8,14 +8,20 @@ import { Roles } from 'src/auth/roles.decorator';
 import { Role } from '@prisma/client';
 import { UseGuards } from '@nestjs/common';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.ADMIN, Role.TECHADMIN)
 @Controller('dashboard')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('stats')
+  @Roles(Role.ADMIN, Role.TECHADMIN)
   getStats() {
     return this.dashboardService.getStats();
+  }
+
+  @Get('employee')
+  @Roles(Role.EMPLOYEE, Role.ADMIN, Role.TECHADMIN)
+  getEmployeeDashboard() {
+    return this.dashboardService.getEmployeeDashboard();
   }
 }

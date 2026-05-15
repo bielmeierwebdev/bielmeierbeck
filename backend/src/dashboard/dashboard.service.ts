@@ -127,4 +127,119 @@ export class DashboardService {
       },
     };
   }
+
+  async getEmployeeDashboard() {
+    const now = new Date();
+
+    const day = now.getDay();
+
+    const daysUntilSaturday = day === 6 ? 0 : 6 - day;
+
+    const saturday = new Date();
+
+    saturday.setDate(now.getDate() + daysUntilSaturday);
+
+    saturday.setHours(0, 0, 0, 0);
+
+    const saturdayEnd = new Date(saturday);
+
+    saturdayEnd.setHours(23, 59, 59, 999);
+
+    // Bestellungen Samstag
+    const saturdayOrders = await this.prisma.order.findMany({
+      where: {
+        pickupDate: {
+          gte: saturday,
+          lte: saturdayEnd,
+        },
+      },
+
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    // Sonderbestellungen Samstag
+    const specialOrders = await this.prisma.specialOrder.findMany({
+      where: {
+        pickupDate: {
+          gte: saturday,
+          lte: saturdayEnd,
+        },
+      },
+
+      orderBy: {
+        pickupTime: 'asc',
+      },
+    });
+
+    // Süßwaren
+    const saturdaySweets = await this.prisma.product.findMany({
+      where: {
+        category: 'SUESSWARE',
+
+        active: true,
+
+        deleted: false,
+      },
+    });
+
+    // Bestellte Mengen berechnen
+    const sweetOrderMap = new Map<string, number>();
+
+    saturdayOrders.forEach((order) => {
+      order.items.forEach((item) => {
+        if (item.product.category === 'SUESSWARE') {
+          const current = sweetOrderMap.get(item.product.name) || 0;
+
+          sweetOrderMap.set(item.product.name, current + item.quantity);
+        }
+      });
+    });
+
+    const sweetsWithOrders = saturdaySweets.map((sweet) => ({
+      ...sweet,
+
+      ordered: sweetOrderMap.get(sweet.name) || 0,
+    }));
+
+    // Produktionsstatus
+    const productionMap = new Map<string, number>();
+
+    saturdayOrders.forEach((order) => {
+      order.items.forEach((item) => {
+        const current = productionMap.get(item.product.name) || 0;
+
+        productionMap.set(item.product.name, current + item.quantity);
+      });
+    });
+
+    const productionStatus = [...productionMap.entries()]
+      .map(([product, ordered]) => ({
+        product,
+
+        ordered,
+
+        produced: 0,
+      }))
+      .sort((a, b) => b.ordered - a.ordered);
+
+    return {
+      stats: {
+        saturdayOrders: saturdayOrders.length,
+
+        specialOrders: specialOrders.length,
+      },
+
+      specialOrders,
+
+      saturdaySweets: sweetsWithOrders,
+
+      productionStatus,
+    };
+  }
 }
