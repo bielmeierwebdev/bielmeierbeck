@@ -306,6 +306,13 @@ nav {
     .divider {
       margin: 0 auto;
     }
+
+    .about-text p {
+      color: $text-muted;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
   }
 
   .products-grid {
