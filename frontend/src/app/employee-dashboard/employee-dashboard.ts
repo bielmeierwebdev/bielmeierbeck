@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +19,7 @@ import { environment } from '../../environments/environment';
 })
 export class EmployeeDashboardPage implements OnInit {
   private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
 
   stats = {
     saturdayOrders: 0,
@@ -31,8 +32,6 @@ export class EmployeeDashboardPage implements OnInit {
   specialOrders: any[] = [];
 
   productionStatus: any[] = [];
-
-  openProduction = 0;
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -49,9 +48,9 @@ export class EmployeeDashboardPage implements OnInit {
 
         this.productionStatus = data.productionStatus;
 
-        this.openProduction = data.productionStatus.filter(
-          (item: any) => item.produced < item.ordered,
-        ).length;
+        console.log('Dashboard Data:', data);
+
+        this.cdr.detectChanges();
       },
 
       error: (err) => {

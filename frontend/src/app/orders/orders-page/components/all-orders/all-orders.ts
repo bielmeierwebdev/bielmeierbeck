@@ -260,43 +260,23 @@ export class AllOrdersComponent implements OnInit {
     });
   }
 
-  /*generateProductionList() {
-    const productMap = new Map();
-
-    this.orders.forEach((order) => {
-      order.items.forEach((item: any) => {
-        const existing = productMap.get(item.product.id);
-
-        if (existing) {
-          existing.ordered += item.quantity;
-        } else {
-          productMap.set(item.product.id, {
-            productId: item.product.id,
-
-            name: item.product.name,
-
-            ordered: item.quantity,
-
-            production: item.quantity,
-          });
-        }
-      });
-    });
-
-    this.productionList = Array.from(productMap.values()).sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
-
-    this.productionListId = null;
-
-    this.productionDialogVisible = true;
-  }*/
-
   saveProductionList() {
-    const payload = {
-      date: new Date(),
+    console.log('productionList:', JSON.stringify(this.productionList));
 
-      items: this.productionList,
+    const now = new Date();
+    const day = now.getDay();
+    const daysUntilSaturday = (6 - day + 7) % 7 || 7;
+    const nextSaturday = new Date(now);
+    nextSaturday.setDate(now.getDate() + daysUntilSaturday);
+    nextSaturday.setHours(12, 0, 0, 0);
+
+    const payload = {
+      date: nextSaturday,
+      items: this.productionList.map((item) => ({
+        name: item.name,
+        ordered: item.ordered,
+        production: item.production,
+      })),
     };
 
     if (this.productionListId) {
@@ -424,16 +404,4 @@ export class AllOrdersComponent implements OnInit {
       },
     });
   }
-
-  /*regenerateProductionList() {
-    this.confirmationService.confirm({
-      header: 'Produktionsliste neu generieren',
-
-      message: 'Die bestehende Produktionsliste wird überschrieben. Fortfahren?',
-
-      accept: () => {
-        this.generateProductionList();
-      },
-    });
-  }*/
 }

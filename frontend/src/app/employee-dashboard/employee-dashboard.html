@@ -23,14 +23,6 @@
         {{ saturdaySweets.length }}
       </strong>
     </div>
-
-    <div class="stat-card">
-      <span class="stat-label">Offene Produktion</span>
-
-      <strong class="stat-value danger">
-        {{ openProduction }}
-      </strong>
-    </div>
   </div>
 
   <div class="dashboard-grid">
@@ -66,6 +58,8 @@
           <strong>{{ sweet.ordered }} bestellt</strong>
         </div>
       </div>
+      <!-- in sweets-list ergänzen: -->
+      <div *ngIf="!saturdaySweets.length" class="empty-state">Keine Süßwaren</div>
     </div>
   </div>
 
@@ -75,21 +69,31 @@
     </div>
 
     <div class="production-list">
+      <div class="production-header-row">
+        <span class="col-product">Produkt</span>
+        <span class="col-num">Bestellt</span>
+        <span class="col-num">Produziert</span>
+        <span class="col-num">Differenz</span>
+      </div>
+
       <div class="production-item" *ngFor="let item of productionStatus">
-        <div class="production-left">
-          <strong>{{ item.product }}</strong>
-
-          <span> {{ item.produced }} / {{ item.ordered }} </span>
-        </div>
-
-        <div
-          class="production-status"
-          [class.done]="item.produced >= item.ordered"
-          [class.partial]="item.produced > 0 && item.produced < item.ordered"
-          [class.open]="item.produced === 0"
+        <span class="col-product"
+          ><strong>{{ item.product }}</strong></span
         >
-          {{ item.produced >= item.ordered ? 'Fertig' : item.produced > 0 ? 'Teilweise' : 'Offen' }}
-        </div>
+        <span class="col-num">{{ item.ordered }}</span>
+        <span class="col-num">{{ item.produced }}</span>
+        <span
+          class="col-num diff"
+          [class.positive]="item.produced - item.ordered > 0"
+          [class.negative]="item.produced - item.ordered < 0"
+          [class.zero]="item.produced - item.ordered === 0"
+        >
+          {{ item.produced - item.ordered > 0 ? '+' : '' }}{{ item.produced - item.ordered }}
+        </span>
+      </div>
+      <!-- in production-list ergänzen: -->
+      <div *ngIf="!productionStatus.length" class="empty-state">
+        Keine Produktionsliste vorhanden
       </div>
     </div>
   </div>
