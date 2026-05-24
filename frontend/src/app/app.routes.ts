@@ -20,11 +20,13 @@ import { authGuard } from './auth/auth-guard';
 
 import { roleGuard } from './auth/role-guard';
 
+import { HomePage } from './home/home-page/home-page';
+
 export const routes: Routes = [
   {
     path: '',
 
-    redirectTo: 'login',
+    redirectTo: 'home',
 
     pathMatch: 'full',
   },
@@ -33,6 +35,12 @@ export const routes: Routes = [
     path: 'login',
 
     component: LoginPage,
+  },
+
+  {
+    path: 'home',
+
+    component: HomePage,
   },
 
   {

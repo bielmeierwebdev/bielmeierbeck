@@ -1,0 +1,716 @@
+// ── Variables ──────────────────────────────────────────────
+$cream: #faf6ee;
+$warm-white: #fdf9f3;
+$brown-dark: #2c1d15;
+$brown-mid: #6b3a1f;
+$brown-light: #c8896a;
+$red: #8b1a1a;
+$red-light: #c0392b;
+$gold: #c9a84c;
+$text: #2c1a0e;
+$text-muted: #7a5c45;
+$border: rgba(107, 58, 31, 0.15);
+
+// ── Reset ──────────────────────────────────────────────────
+:host {
+  display: block;
+  font-family: 'Lato', sans-serif;
+  background: $cream;
+  color: $text;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ── WhatsApp Banner ────────────────────────────────────────
+.wa-banner {
+  background: #25d366;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #1da851;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Navigation ─────────────────────────────────────────────
+nav {
+  background: $brown-dark;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 68px;
+
+  .nav-logo {
+    height: 48px;
+    filter: brightness(0) invert(1);
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+
+    span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      transition: all 0.3s;
+      transform-origin: center;
+    }
+
+    &.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    &.open span:nth-child(2) {
+      opacity: 0;
+    }
+    &.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+
+    a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $gold;
+      }
+    }
+  }
+}
+
+// ── Hero ───────────────────────────────────────────────────
+.hero {
+  background:
+    linear-gradient(rgba(20, 8, 2, 0.65), rgba(20, 8, 2, 0.65)),
+    url('/hero-bg.jpg') center/cover no-repeat;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 5% 60px;
+  position: relative;
+  overflow: hidden;
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-logo {
+    width: min(320px, 70vw);
+    margin-bottom: 32px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: $cream;
+    line-height: 1.2;
+    margin-bottom: 18px;
+
+    em {
+      color: $gold;
+      font-style: italic;
+    }
+  }
+
+  p {
+    color: rgba(250, 246, 238, 0.75);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: $red;
+    color: #fff;
+    text-decoration: none;
+    padding: 16px 40px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 2px solid $red;
+    transition: all 0.25s;
+
+    &:hover {
+      background: transparent;
+      color: $red-light;
+      border-color: $red-light;
+    }
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: bounce 2s infinite;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+  }
+}
+
+// ── Shared Section Helpers ─────────────────────────────────
+.section-label {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: $red;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: $brown-dark;
+  line-height: 1.25;
+  margin-bottom: 24px;
+
+  em {
+    color: $red;
+    font-style: italic;
+  }
+}
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background: $gold;
+  margin-bottom: 32px;
+}
+
+// ── Über uns ───────────────────────────────────────────────
+.about {
+  background: $warm-white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 100px 5%;
+
+  .about-text p {
+    color: $text-muted;
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+
+  .about-img-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #c8a882 0%, #a0784a 100%);
+    border: 6px solid $cream;
+    box-shadow: 12px 12px 0 $border;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    .about-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.6;
+    }
+  }
+}
+
+// ── Produkte ───────────────────────────────────────────────
+.products {
+  background: $cream;
+  padding: 100px 5%;
+
+  .products-header {
+    text-align: center;
+    margin-bottom: 56px;
+
+    .divider {
+      margin: 0 auto;
+    }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    margin-bottom: 48px;
+  }
+
+  .product-card {
+    background: $warm-white;
+    border: 1px solid $border;
+    overflow: hidden;
+    transition:
+      transform 0.25s,
+      box-shadow 0.25s;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(59, 34, 18, 0.12);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 260px; // feste Höhe statt aspect-ratio
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .product-info {
+      padding: 20px;
+
+      h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        color: $brown-dark;
+        margin-bottom: 6px;
+      }
+
+      p {
+        font-size: 0.88rem;
+        color: $text-muted;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .flyer-wrap {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .flyer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: $brown-dark;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 32px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: $red;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .flyer-hint {
+    margin-top: 12px;
+    font-size: 12px;
+    color: $text-muted;
+  }
+}
+
+// in der nav statt img:
+.nav-brand {
+  font-family: 'Playfair Display', serif;
+  color: $gold;
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+// ── Öffnungszeiten ─────────────────────────────────────────
+.hours {
+  background: $brown-dark;
+  color: $cream;
+  text-align: center;
+  padding: 100px 5%;
+
+  .section-title {
+    color: $cream;
+  }
+  .section-label {
+    color: $gold;
+  }
+  .divider {
+    margin: 0 auto 40px;
+  }
+
+  .hours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .hours-row {
+    padding: 22px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(201, 168, 76, 0.12);
+    }
+  }
+
+  .hours-day {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: $gold;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .hours-time {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: $cream;
+
+    &.closed {
+      color: rgba(250, 246, 238, 0.35);
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+  }
+
+  .hours-note {
+    margin-top: 28px;
+    font-size: 13px;
+    color: rgba(250, 246, 238, 0.4);
+    letter-spacing: 1px;
+  }
+}
+
+// ── Kontakt ────────────────────────────────────────────────
+.contact {
+  background: $warm-white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  padding: 100px 5%;
+
+  .contact-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+    background: $red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+    }
+
+    &.whatsapp-icon {
+      background: #25d366;
+    }
+  }
+
+  h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: $text-muted;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  p,
+  a {
+    color: $brown-dark;
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  a:hover {
+    color: $red;
+  }
+
+  .map-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #c8b89a 0%, #a09070 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    svg {
+      width: 40px;
+      height: 40px;
+      opacity: 0.7;
+    }
+  }
+}
+
+// ── Footer ─────────────────────────────────────────────────
+footer {
+  background: #1a0d05;
+  color: rgba(250, 246, 238, 0.5);
+  text-align: center;
+  padding: 36px 5%;
+  font-size: 13px;
+  line-height: 1.8;
+
+  .footer-logo {
+    height: 48px;
+    opacity: 0.4;
+    margin-bottom: 16px;
+    filter: brightness(0) invert(1);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  a {
+    color: rgba(250, 246, 238, 0.5);
+    text-decoration: none;
+
+    &:hover {
+      color: $gold;
+    }
+  }
+}
+
+// ── Animations ─────────────────────────────────────────────
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
+// ── Responsive ─────────────────────────────────────────────
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 0 4%;
+
+    .nav-logo {
+      margin: 12px 0;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      padding-bottom: 12px;
+
+      &.open {
+        display: flex;
+      }
+
+      li a {
+        display: block;
+        padding: 14px 0;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+
+  .about,
+  .contact {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+// ── Footer Links ───────────────────────────────────────────
+.footer-link {
+  background: none;
+  border: none;
+  color: rgba(250, 246, 238, 0.5);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $gold;
+  }
+}
+
+// ── Modal ──────────────────────────────────────────────────
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal {
+  background: $warm-white;
+  max-width: 620px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 48px;
+  position: relative;
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: $brown-dark;
+    margin-bottom: 24px;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  strong {
+    color: $brown-dark;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: $text-muted;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $red;
+  }
+}
