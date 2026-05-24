@@ -11,7 +11,7 @@ import { Role } from '@prisma/client';
 import { UseGuards } from '@nestjs/common';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.ADMIN, Role.TECHADMIN)
+@Roles(Role.ADMIN, Role.TECHADMIN, Role.EMPLOYEE)
 @Controller('production-lists')
 export class ProductionListsController {
   constructor(

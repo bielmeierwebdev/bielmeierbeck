@@ -12,6 +12,7 @@ import { SpecialOrdersModule } from './special-orders/special-orders.module';
 import { AiModule } from './ai/ai.module';
 import { ProductionListsModule } from './production-lists/production-lists.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardModule as EmployeeDashboardModule } from './employees-dashboard/employees-dashboard.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AiModule,
     ProductionListsModule,
     DashboardModule,
+    EmployeeDashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
