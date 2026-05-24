@@ -61,4 +61,12 @@ export class HomePage {
       image: 'mohnzopf.jpg',
     },
   ];
+
+  scrollTo(id: string): void {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    this.menuOpen = false;
+  }
 }

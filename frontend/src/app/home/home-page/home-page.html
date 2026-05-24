@@ -19,10 +19,10 @@
   </button>
 
   <ul class="nav-links" [class.open]="menuOpen">
-    <li><a href="#about" (click)="menuOpen = false">Über uns</a></li>
-    <li><a href="#products" (click)="menuOpen = false">Produkte</a></li>
-    <li><a href="#hours" (click)="menuOpen = false">Öffnungszeiten</a></li>
-    <li><a href="#contact" (click)="menuOpen = false">Kontakt</a></li>
+    <li><a (click)="scrollTo('about')">Über uns</a></li>
+    <li><a (click)="scrollTo('products')">Produkte</a></li>
+    <li><a (click)="scrollTo('hours')">Öffnungszeiten</a></li>
+    <li><a (click)="scrollTo('contact')">Kontakt</a></li>
   </ul>
 </nav>
 
@@ -34,7 +34,7 @@
       Handwerklich hergestellte Backwaren aus Viechtach – seit Generationen mit Leidenschaft, echten
       Zutaten und dem Geschmack von damals.
     </p>
-    <a href="#products" class="hero-cta">Unsere Produkte entdecken</a>
+    <a (click)="scrollTo('products')" class="hero-cta">Unsere Produkte entdecken</a>
   </div>
   <div class="hero-scroll">Mehr</div>
 </section>
