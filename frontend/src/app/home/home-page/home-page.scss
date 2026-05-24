@@ -722,3 +722,87 @@ footer {
     color: $red;
   }
 }
+
+// ── Brotsorten ─────────────────────────────────────────────
+.breads {
+  background: $warm-white;
+  padding: 100px 5%;
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .bread-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    margin-bottom: 80px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.reverse {
+      direction: rtl;
+      > * {
+        direction: ltr;
+      }
+    }
+  }
+
+  .bread-img-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #c8a882 0%, #a0784a 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 6px solid $cream;
+    box-shadow: 12px 12px 0 $border;
+
+    span {
+      font-size: 40px;
+    }
+  }
+
+  .bread-text {
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: $brown-dark;
+      margin-bottom: 20px;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 3px;
+        background: $gold;
+        margin-top: 12px;
+      }
+    }
+
+    p {
+      color: $text-muted;
+      font-size: 1.05rem;
+      line-height: 1.9;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .bread-block,
+    .bread-block.reverse {
+      grid-template-columns: 1fr;
+      direction: ltr;
+      gap: 32px;
+    }
+  }
+}
